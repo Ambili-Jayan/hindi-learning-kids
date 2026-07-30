@@ -39,10 +39,6 @@
         .animate-bounce-slow {
             animation: bounce-slow 3s infinite ease-in-out;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(8px);
-        }
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -671,57 +667,58 @@
 
         const VARNAMALA_DATA = [
             // Swar (Vowels)
-            { type: 'swar', letter: 'अ', word: 'अनार', eng: 'Pomegranate', translit: 'Anaar', emoji: '🍎' },
-            { type: 'swar', letter: 'आ', word: 'आम', eng: 'Mango', translit: 'Aam', emoji: '🥭' },
-            { type: 'swar', letter: 'इ', word: 'इमली', eng: 'Tamarind', translit: 'Imli', emoji: '🟤' },
-            { type: 'swar', letter: 'ई', word: 'ईख', eng: 'Sugarcane', translit: 'Eekh', emoji: '🌾' },
-            { type: 'swar', letter: 'उ', word: 'उल्लू', eng: 'Owl', translit: 'Ullu', emoji: '🦉' },
-            { type: 'swar', letter: 'ऊ', word: 'ऊन', eng: 'Wool', translit: 'Oon', emoji: '🧶' },
-            { type: 'swar', letter: 'ऋ', word: 'ऋषि', eng: 'Sage', translit: 'Rishi', emoji: '🧘' },
-            { type: 'swar', letter: 'ए', word: 'एड़ी', eng: 'Heel', translit: 'Edi', emoji: '🦶' },
-            { type: 'swar', letter: 'ऐ', word: 'ऐनक', eng: 'Spectacles', translit: 'Ainak', emoji: '👓' },
-            { type: 'swar', letter: 'ओ', word: 'ओखली', eng: 'Mortar', translit: 'Okhli', emoji: '🥣' },
-            { type: 'swar', letter: 'औ', word: 'औरत', eng: 'Woman', translit: 'Aurat', emoji: '👩' },
-            { type: 'swar', letter: 'अं', word: 'अंगूर', eng: 'Grapes', translit: 'Angoor', emoji: '🍇' },
-            { type: 'swar', letter: 'अः', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'swar', letter: 'अ', phonetic: 'a', word: 'अनार', eng: 'Pomegranate', translit: 'Anaar', emoji: '🍎' },
+            { type: 'swar', letter: 'आ', phonetic: 'aa', word: 'आम', eng: 'Mango', translit: 'Aam', emoji: '🥭' },
+            { type: 'swar', letter: 'इ', phonetic: 'i', word: 'इमली', eng: 'Tamarind', translit: 'Imli', emoji: '🟤' },
+            { type: 'swar', letter: 'ई', phonetic: 'ee', word: 'ईख', eng: 'Sugarcane', translit: 'Eekh', emoji: '🌾' },
+            { type: 'swar', letter: 'उ', phonetic: 'u', word: 'उल्लू', eng: 'Owl', translit: 'Ullu', emoji: '🦉' },
+            { type: 'swar', letter: 'ऊ', phonetic: 'oo', word: 'ऊन', eng: 'Wool', translit: 'Oon', emoji: '🧶' },
+            { type: 'swar', letter: 'ऋ', phonetic: 'ri', word: 'ऋषि', eng: 'Sage', translit: 'Rishi', emoji: '🧘' },
+            { type: 'swar', letter: 'ए', phonetic: 'e', word: 'एड़ी', eng: 'Heel', translit: 'Edi', emoji: '🦶' },
+            { type: 'swar', letter: 'ऐ', phonetic: 'ai', word: 'ऐनक', eng: 'Spectacles', translit: 'Ainak', emoji: '👓' },
+            { type: 'swar', letter: 'ओ', phonetic: 'o', word: 'ओखली', eng: 'Mortar', translit: 'Okhli', emoji: '🥣' },
+            { type: 'swar', letter: 'औ', phonetic: 'au', word: 'औरत', eng: 'Woman', translit: 'Aurat', emoji: '👩' },
+            { type: 'swar', letter: 'अं', phonetic: 'an', word: 'अंगूर', eng: 'Grapes', translit: 'Angoor', emoji: '🍇' },
+            { type: 'swar', letter: 'अः', phonetic: 'ah', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
 
             // Vyanjan (Consonants)
-            { type: 'vyanjan', letter: 'क', word: 'कबूतर', eng: 'Pigeon', translit: 'Kabootar', emoji: '🕊️' },
-            { type: 'vyanjan', letter: 'ख', word: 'खरगोश', eng: 'Rabbit', translit: 'Khargosh', emoji: '🐇' },
-            { type: 'vyanjan', letter: 'ग', word: 'गमला', eng: 'Flowerpot', translit: 'Gamla', emoji: '🪴' },
-            { type: 'vyanjan', letter: 'घ', word: 'घड़ी', eng: 'Clock', translit: 'Ghadi', emoji: '⏰' },
-            { type: 'vyanjan', letter: 'ङ', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
-            { type: 'vyanjan', letter: 'च', word: 'चम्मच', eng: 'Spoon', translit: 'Chammach', emoji: '🥄' },
-            { type: 'vyanjan', letter: 'छ', word: 'छाता', eng: 'Umbrella', translit: 'Chhaata', emoji: '☂️' },
-            { type: 'vyanjan', letter: 'ज', word: 'जहाज', eng: 'Ship', translit: 'Jahaaz', emoji: '🚢' },
-            { type: 'vyanjan', letter: 'झ', word: 'झंडा', eng: 'Flag', translit: 'Jhanda', emoji: '🇮🇳' },
-            { type: 'vyanjan', letter: 'ञ', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
-            { type: 'vyanjan', letter: 'ट', word: 'टमाटर', eng: 'Tomato', translit: 'Tamaatar', emoji: '🍅' },
-            { type: 'vyanjan', letter: 'ठ', word: 'ठठेरा', eng: 'Tinker', translit: 'Thathera', emoji: '🔨' },
-            { type: 'vyanjan', letter: 'ड', word: 'डमरू', eng: 'Drum', translit: 'Damru', emoji: '🪘' },
-            { type: 'vyanjan', letter: 'ढ', word: 'ढोलक', eng: 'Dholak', translit: 'Dholak', emoji: '🥁' },
-            { type: 'vyanjan', letter: 'ण', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
-            { type: 'vyanjan', letter: 'त', word: 'तरबूज', eng: 'Watermelon', translit: 'Tarbooz', emoji: '🍉' },
-            { type: 'vyanjan', letter: 'थ', word: 'थर्मामीटर', eng: 'Thermometer', translit: 'Thermometer', emoji: '🌡️' },
-            { type: 'vyanjan', letter: 'द', word: 'दवात', eng: 'Inkpot', translit: 'Dawaat', emoji: '🖋️' },
-            { type: 'vyanjan', letter: 'ध', word: 'धनुष', eng: 'Bow', translit: 'Dhanush', emoji: '🏹' },
-            { type: 'vyanjan', letter: 'न', word: 'नल', eng: 'Tap', translit: 'Nal', emoji: '🚰' },
-            { type: 'vyanjan', letter: 'प', word: 'पतंग', eng: 'Kite', translit: 'Patang', emoji: '🪁' },
-            { type: 'vyanjan', letter: 'फ', word: 'फल', eng: 'Fruits', translit: 'Fal', emoji: '🍎' },
-            { type: 'vyanjan', letter: 'ब', word: 'बस', eng: 'Bus', translit: 'Bus', emoji: '🚌' },
-            { type: 'vyanjan', letter: 'भ', word: 'भालू', eng: 'Bear', translit: 'Bhaalu', emoji: '🐻' },
-            { type: 'vyanjan', letter: 'म', word: 'मछली', eng: 'Fish', translit: 'Machhli', emoji: '🐟' },
-            { type: 'vyanjan', letter: 'य', word: 'यज्ञ', eng: 'Yajna', translit: 'Yajna', emoji: '🔥' },
-            { type: 'vyanjan', letter: 'र', word: 'रथ', eng: 'Chariot', translit: 'Rath', emoji: '🛞' },
-            { type: 'vyanjan', letter: 'ल', word: 'लट्टू', eng: 'Spinning Top', translit: 'Lattuu', emoji: '🪀' },
-            { type: 'vyanjan', letter: 'व', word: 'वक', eng: 'Heron', translit: 'Vak', emoji: '🦢' },
-            { type: 'vyanjan', letter: 'श', word: 'शलजम', eng: 'Turnip', translit: 'Shaljam', emoji: '🧅' },
-            { type: 'vyanjan', letter: 'ष', word: 'षट्कोण', eng: 'Hexagon', translit: 'Shatkon', emoji: '⬢' },
-            { type: 'vyanjan', letter: 'स', word: 'सपेरा', eng: 'Snake Charmer', translit: 'Sapera', emoji: '🐍' },
-            { type: 'vyanjan', letter: 'ह', word: 'हाथी', eng: 'Elephant', translit: 'Haathi', emoji: '🐘' },
-            { type: 'vyanjan', letter: 'क्ष', word: 'क्षत्रिय', eng: 'Warrior', translit: 'Kshatriya', emoji: '⚔️' },
-            { type: 'vyanjan', letter: 'त्र', word: 'त्रिशूल', eng: 'Trident', translit: 'Trishul', emoji: '🔱' },
-            { type: 'vyanjan', letter: 'ज्ञ', word: 'ज्ञानी', eng: 'Scholar', translit: 'Gyaani', emoji: '👨‍🏫' }
+            { type: 'vyanjan', letter: 'क', phonetic: 'ka', word: 'कबूतर', eng: 'Pigeon', translit: 'Kabootar', emoji: '🕊️' },
+            { type: 'vyanjan', letter: 'ख', phonetic: 'kha', word: 'खरगोश', eng: 'Rabbit', translit: 'Khargosh', emoji: '🐇' },
+            { type: 'vyanjan', letter: 'ग', phonetic: 'ga', word: 'गमला', eng: 'Flowerpot', translit: 'Gamla', emoji: '🪴' },
+            { type: 'vyanjan', letter: 'घ', phonetic: 'gha', word: 'घड़ी', eng: 'Clock', translit: 'Ghadi', emoji: '⏰' },
+            { type: 'vyanjan', letter: 'ङ', phonetic: 'gna', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'vyanjan', letter: 'च', phonetic: 'cha', word: 'चम्मच', eng: 'Spoon', translit: 'Chammach', emoji: '🥄' },
+            { type: 'vyanjan', letter: 'छ', phonetic: 'chha', word: 'छाता', eng: 'Umbrella', translit: 'Chhaata', emoji: '☂️' },
+            { type: 'vyanjan', letter: 'ज', phonetic: 'ja', word: 'जहाज', eng: 'Ship', translit: 'Jahaaz', emoji: '🚢' },
+            { type: 'vyanjan', letter: 'झ', phonetic: 'jha', word: 'झंडा', eng: 'Flag', translit: 'Jhanda', emoji: '🇮🇳' },
+            { type: 'vyanjan', letter: 'ञ', phonetic: 'nya', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'vyanjan', letter: 'ट', phonetic: 'ta', word: 'टमाटर', eng: 'Tomato', translit: 'Tamaatar', emoji: '🍅' },
+            { type: 'vyanjan', letter: 'ठ', phonetic: 'tta', word: 'ठठेरा', eng: 'Tinker', translit: 'Thathera', emoji: '🔨' },
+            { type: 'vyanjan', letter: 'ड', phonetic: 'da', word: 'डमरू', eng: 'Drum', translit: 'Damru', emoji: '🪘' },
+            { type: 'vyanjan', letter: 'ढ', phonetic: 'dda', word: 'ढोलक', eng: 'Dholak', translit: 'Dholak', emoji: '🥁' },
+            { type: 'vyanjan', letter: 'ण', phonetic: 'nna', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'vyanjan', letter: 'त', phonetic: 'tha', word: 'तरबूज', eng: 'Watermelon', translit: 'Tarbooz', emoji: '🍉' },
+            { type: 'vyanjan', letter: 'थ', phonetic: 'thha', word: 'थर्मामीटर', eng: 'Thermometer', translit: 'Thermometer', emoji: '🌡️' },
+            { type: 'vyanjan', letter: 'द', phonetic: 'dha', word: 'दवात', eng: 'Inkpot', translit: 'Dawaat', emoji: '🖋️' },
+            { type: 'vyanjan', letter: 'ध', phonetic: 'dhha', word: 'धनुष', eng: 'Bow', translit: 'Dhanush', emoji: '🏹' },
+            { type: 'vyanjan', letter: 'न', phonetic: 'na', word: 'नल', eng: 'Tap', translit: 'Nal', emoji: '🚰' },
+            { type: 'vyanjan', letter: 'प', phonetic: 'pa', word: 'पतंग', eng: 'Kite', translit: 'Patang', emoji: '🪁' },
+            { type: 'vyanjan', letter: 'फ', phonetic: 'pha', word: 'फल', eng: 'Fruits', translit: 'Fal', emoji: '🍎' },
+            { type: 'vyanjan', letter: 'ब', phonetic: 'ba', word: 'बस', eng: 'Bus', translit: 'Bus', emoji: '🚌' },
+            { type: 'vyanjan', letter: 'भ', phonetic: 'bha', word: 'भालू', eng: 'Bear', translit: 'Bhaalu', emoji: '🐻' },
+            { type: 'vyanjan', letter: 'म', phonetic: 'ma', word: 'मछली', eng: 'Fish', translit: 'Machhli', emoji: '🐟' },
+            { type: 'vyanjan', letter: 'य', phonetic: 'ya', word: 'यज्ञ', eng: 'Yajna', translit: 'Yajna', emoji: '🔥' },
+            { type: 'vyanjan', letter: 'र', phonetic: 'ra', word: 'रथ', eng: 'Chariot', translit: 'Rath', emoji: '🛞' },
+            { type: 'vyanjan', letter: 'ल', phonetic: 'la', word: 'लट्टू', eng: 'Spinning Top', translit: 'Lattuu', emoji: '🪀' },
+            { type: 'vyanjan', letter: 'व', phonetic: 'va', word: 'वक', eng: 'Heron', translit: 'Vak', emoji: '🦢' },
+            { type: 'vyanjan', letter: 'श', phonetic: 'sha', word: 'शलजम', eng: 'Turnip', translit: 'Shaljam', emoji: '🧅' },
+            { type: 'vyanjan', letter: 'ष', phonetic: 'sha', word: 'षट्कोण', eng: 'Hexagon', translit: 'Shatkon', emoji: '⬢' },
+            { type: 'vyanjan', letter: 'स', phonetic: 'sa', word: 'सपेरा', eng: 'Snake Charmer', translit: 'Sapera', emoji: '🐍' },
+            { type: 'vyanjan', letter: 'ह', phonetic: 'ha', word: 'हाथी', eng: 'Elephant', translit: 'Haathi', emoji: '🐘' },
+            { type: 'vyanjan', letter: 'क्ष', phonetic: 'ksha', word: 'क्षत्रिय', eng: 'Warrior', translit: 'Kshatriya', emoji: '⚔️' },
+            { type: 'vyanjan', letter: 'त्र', phonetic: 'thra', word: 'त्रिशूल', eng: 'Trident', translit: 'Trishul', emoji: '🔱' },
+            { type: 'vyanjan', letter: 'श्र', phonetic: 'sra', word: 'श्रमिक', eng: 'Worker', translit: 'Shramik', emoji: '👷' },
+            { type: 'vyanjan', letter: 'ज्ञ', phonetic: 'gya', word: 'ज्ञानी', eng: 'Scholar', translit: 'Gyaani', emoji: '👨‍🏫' }
         ];
 
         const GINTI_DATA = [
@@ -975,6 +972,14 @@
             { id: 'stk_star10', level: 'Star', emoji: '🏆', title: 'ग्रैंड चैंपियन!', engTitle: 'Grand Champion', desc: '10 स्टार प्राप्त किए!', req: 'Earn 10 Points' }
         ];
 
+        function getHindiVoice() {
+            if (!('speechSynthesis' in window)) return null;
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find(v => v.lang === 'hi-IN' || v.lang === 'hi_IN') ||
+                   voices.find(v => v.lang.startsWith('hi') || v.name.toLowerCase().includes('hindi')) ||
+                   null;
+        }
+
         function speakHindiText(text, isHover = false) {
             if (isAudioMuted) return;
             if (isHover && !isHoverAudioEnabled) return;
@@ -984,7 +989,30 @@
                 utterance.lang = 'hi-IN';
                 utterance.rate = 0.85;
                 utterance.pitch = 1.0;
+                
+                const hiVoice = getHindiVoice();
+                if (hiVoice) {
+                    utterance.voice = hiVoice;
+                }
+                
                 window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakVarnamalaLetter(idx) {
+            const item = VARNAMALA_DATA[idx];
+            if (!item) return;
+            if (item.word === 'खाली') {
+                speakHindiText(`अक्षर ${item.letter}`);
+            } else {
+                speakHindiText(`अक्षर ${item.letter}, से ${item.word}`);
+            }
+        }
+
+        function speakVarnamalaHover(idx) {
+            const item = VARNAMALA_DATA[idx];
+            if (item) {
+                speakHindiText(`अक्षर ${item.letter}`, true);
             }
         }
 
@@ -1035,17 +1063,23 @@
             if (filterType === 'swar') filtered = VARNAMALA_DATA.filter(item => item.type === 'swar');
             if (filterType === 'vyanjan') filtered = VARNAMALA_DATA.filter(item => item.type === 'vyanjan');
 
-            grid.innerHTML = filtered.map(item => `
-                <div onclick="speakHindiText('${item.letter} से ${item.word}')" onmouseenter="speakHindiText('${item.letter}', true)" class="card-3d bg-white p-4 rounded-3xl border-2 border-amber-200 hover:border-amber-400 cursor-pointer shadow-sm flex flex-col items-center justify-between space-y-2 text-center group">
-                    <span class="text-xs font-black px-2 py-0.5 rounded-full ${item.type === 'swar' ? 'bg-amber-100 text-amber-900' : 'bg-orange-100 text-orange-900'} uppercase">${item.type}</span>
-                    <span class="text-5xl font-black font-devanagari text-amber-950 group-hover:scale-110 transition-transform">${item.letter}</span>
-                    <div class="space-y-0.5 w-full bg-slate-50 p-2 rounded-2xl border border-slate-100">
-                        <span class="text-2xl block">${item.emoji}</span>
-                        <h4 class="font-extrabold font-devanagari text-slate-800 text-base leading-tight">${item.word}</h4>
-                        <p class="text-[10px] text-slate-500 font-bold">${item.translit} (${item.eng})</p>
+            grid.innerHTML = filtered.map((item, idx) => {
+                const originalIdx = VARNAMALA_DATA.findIndex(v => v.letter === item.letter);
+                return `
+                    <div onclick="speakVarnamalaLetter(${originalIdx})" onmouseenter="speakVarnamalaHover(${originalIdx})" class="card-3d bg-white p-4 rounded-3xl border-2 border-amber-200 hover:border-amber-400 cursor-pointer shadow-sm flex flex-col items-center justify-between space-y-2 text-center group relative overflow-hidden">
+                        <div class="flex items-center justify-between w-full px-1">
+                            <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${item.type === 'swar' ? 'bg-amber-100 text-amber-900' : 'bg-orange-100 text-orange-900'} uppercase">${item.type}</span>
+                            <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">${item.phonetic}</span>
+                        </div>
+                        <span class="text-5xl font-black font-devanagari text-amber-950 group-hover:scale-110 transition-transform my-1">${item.letter}</span>
+                        <div class="space-y-0.5 w-full bg-slate-50 p-2 rounded-2xl border border-slate-100">
+                            <span class="text-2xl block">${item.emoji}</span>
+                            <h4 class="font-extrabold font-devanagari text-slate-800 text-base leading-tight">${item.word}</h4>
+                            <p class="text-[10px] text-slate-500 font-bold">${item.translit} (${item.eng})</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function filterVarnamala(type) {
@@ -1343,7 +1377,7 @@
         }
 
         function speakTracingChar() {
-            speakHindiText(selectedTracingChar);
+            speakHindiText(`अक्षर ${selectedTracingChar}`);
         }
 
         function setBrushColor(color) {
@@ -1906,6 +1940,7 @@
             switchTab('dashboard');
 
             if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
                 window.speechSynthesis.onvoiceschanged = function() {
                     window.speechSynthesis.getVoices();
                 };
