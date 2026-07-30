@@ -1,6 +1,7 @@
-<img width="1024" height="797" alt="Hindi_app" src="https://github.com/user-attachments/assets/c34d5918-2583-4c79-a563-a3425ca4f7fc" />
 
 📱 हिंदी पाठशाला - Kids Hindi Learning Web App
+<img width="2032" height="1514" alt="Hindi_app1" src="https://github.com/user-attachments/assets/1efbf2a1-506f-4968-9250-bc567794dafc" />
+
 
 A fun, interactive, and gamified web application designed to help kids learn Hindi letters, numbers, vocabulary, grammar basics, and short stories with audio pronunciations, speech recording practice, interactive letter tracing, and collectible sticker rewards!
 
