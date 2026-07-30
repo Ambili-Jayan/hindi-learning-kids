@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>हिंदी पाठशाला - Kids Hindi Learning App</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Baloo 2 & Fredoka -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka', 'Baloo 2', cursive, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+            touch-action: manipulation;
+        }
+        .font-devanagari {
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+        .card-3d {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .card-3d:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+        .card-3d:active {
+            transform: translateY(2px) scale(0.98);
+        }
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 3s infinite ease-in-out;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-12 select-none">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-4 border-amber-300 shadow-sm px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('varnamala')">
+                <div class="w-12 h-12 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl font-black shadow-md transform -rotate-3">
+                    अ
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-amber-900 leading-none font-devanagari">हिंदी पाठशाला</h1>
+                    <p class="text-xs text-amber-700 font-semibold">Kids Hindi Learning Fun App</p>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <button onclick="switchTab('dashboard')" id="btn-goto-dashboard" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-2xl flex items-center space-x-1.5 shadow-md active:scale-95 transition-all" title="Levels Dashboard">
+                    <span>🏠</span>
+                    <span class="hidden sm:inline font-devanagari">डैशबोर्ड</span>
+                </button>
+
+                <button onclick="toggleHoverAudio()" id="hover-toggle-btn" class="px-3 py-1.5 bg-indigo-50 border-2 border-indigo-200 rounded-2xl flex items-center space-x-2 text-indigo-700 font-bold text-xs hover:bg-indigo-100 transition-colors" title="Toggle automatic audio on mouse hover">
+                    <i id="hover-toggle-icon" class="fa-solid fa-hand-pointer text-indigo-500"></i>
+                    <span id="hover-toggle-text">Hover Audio: ON</span>
+                </button>
+
+                <button onclick="toggleAudioMute()" class="w-9 h-9 bg-slate-100 border-2 border-slate-200 rounded-2xl flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors" title="Toggle Mute">
+                    <i id="mute-icon" class="fa-solid fa-volume-high text-slate-700"></i>
+                </button>
+
+                <!-- Rewards Star Counter -->
+                <div class="bg-amber-100 border-2 border-amber-300 px-3 py-1.5 rounded-2xl flex items-center space-x-2 shadow-inner">
+                    <span class="text-xl">⭐</span>
+                    <span id="star-count" class="font-extrabold text-amber-800 text-lg">0</span>
+                    <span class="text-xs font-bold text-amber-700">Pts</span>
+                </div>
+
+                <!-- Sticker Album Trigger Button -->
+                <button onclick="openStickerAlbum()" class="bg-gradient-to-r from-purple-500 to-indigo-600 border-2 border-purple-300 px-3 py-1.5 rounded-2xl flex items-center space-x-2 shadow-md hover:scale-105 active:scale-95 transition-all text-white font-bold text-xs">
+                    <span class="text-xl">🏆</span>
+                    <span class="hidden sm:inline">स्टिकर</span>
+                    <span id="sticker-count-badge" class="bg-amber-400 text-amber-950 font-black px-1.5 py-0.5 rounded-full text-[10px]">0/10</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 pt-4">
+        <!-- Navigation Tabs for Levels 1-7 + Tracing + Quiz -->
+        <nav class="flex flex-wrap items-center gap-2 pb-4 mb-6 border-b border-slate-200">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3.5 py-2 rounded-2xl font-bold text-xs md:text-sm flex items-center space-x-1.5 transition-all bg-amber-500 text-white shadow-md">
+                <span>🏠</span>
+                <span>Dashboard (डैशबोर्ड)</span>
+            </button>
+
+            <button onclick="switchTab('varnamala')" id="tab-varnamala" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] font-black">L1</span>
+                <span>Letters (अक्षर)</span>
+            </button>
+
+            <button onclick="switchTab('ginti')" id="tab-ginti" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-[10px] font-black">L2</span>
+                <span>Numbers 1-50 (गिनती)</span>
+            </button>
+
+            <button onclick="switchTab('shabd')" id="tab-shabd" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] font-black">L3</span>
+                <span>Words (छोटे शब्द)</span>
+            </button>
+
+            <button onclick="switchTab('sentences')" id="tab-sentences" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded text-[10px] font-black">L4</span>
+                <span>Sentences (छोटे वाक्य)</span>
+            </button>
+
+            <button onclick="switchTab('grammar')" id="tab-grammar" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded text-[10px] font-black">L5</span>
+                <span>Grammar (व्याकरण)</span>
+            </button>
+
+            <button onclick="switchTab('synonyms')" id="tab-synonyms" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded text-[10px] font-black">L6</span>
+                <span>Synonyms (समान अर्थ)</span>
+            </button>
+
+            <button onclick="switchTab('reading')" id="tab-reading" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <span class="bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-[10px] font-black">L7</span>
+                <span>Stories (कहानियाँ)</span>
+            </button>
+
+            <button onclick="switchTab('tracing')" id="tab-tracing" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <i class="fa-solid fa-pen-ruler text-pink-500"></i>
+                <span>Tracing (ट्रेसिंग)</span>
+            </button>
+
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">
+                <i class="fa-solid fa-gamepad text-indigo-500"></i>
+                <span>Quiz (क्विज़)</span>
+            </button>
+        </nav>
+
+        <!-- ==================== DASHBOARD SECTION ==================== -->
+        <section id="section-dashboard" class="tab-content space-y-6">
+            <div class="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 p-6 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">welcome to hindi pathshala</span>
+                    <h2 class="text-3xl md:text-4xl font-black font-devanagari mt-1">सीखने का सफ़र शुरू करें! 🚀</h2>
+                    <p class="text-xs md:text-sm font-bold text-amber-100 max-w-xl">Choose any level below to start learning Hindi letters, numbers, vocabulary, grammar, and stories!</p>
+                </div>
+                <div class="absolute -right-4 -bottom-6 text-9xl opacity-20 pointer-events-none select-none">🎯</div>
+            </div>
+
+            <!-- All 7 Levels + Activities Dashboard Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                <!-- Level 1 Card -->
+                <div onclick="switchTab('varnamala')" class="card-3d bg-white p-5 rounded-3xl border-2 border-amber-200 hover:border-amber-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-amber-100 text-amber-900 font-extrabold text-xs rounded-full uppercase">Level 1</span>
+                        <span class="text-3xl">🔤</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Letters <span class="text-amber-800 font-devanagari">(अक्षर)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Swar & Vyanjan with pronunciations & examples.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-amber-600 font-devanagari">स्वर व व्यंजन</span>
+                        <span class="text-xs font-bold bg-amber-500 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Level 2 Card -->
+                <div onclick="switchTab('ginti')" class="card-3d bg-white p-5 rounded-3xl border-2 border-emerald-200 hover:border-emerald-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-900 font-extrabold text-xs rounded-full uppercase">Level 2</span>
+                        <span class="text-3xl">🔢</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Numbers 1-50 <span class="text-emerald-800 font-devanagari">(गिनती)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Learn Hindi digits १-५० with audio pronunciations.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-emerald-600 font-devanagari">संख्या १ से ५०</span>
+                        <span class="text-xs font-bold bg-emerald-500 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Level 3 Card -->
+                <div onclick="switchTab('shabd')" class="card-3d bg-white p-5 rounded-3xl border-2 border-purple-200 hover:border-purple-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-purple-100 text-purple-900 font-extrabold text-xs rounded-full uppercase">Level 3</span>
+                        <span class="text-3xl">🍎</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Small Words <span class="text-purple-800 font-devanagari">(छोटे शब्द)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">10 Animals, 10 Fruits/Veg, 10 Things, Colors & Shapes.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-purple-600 font-devanagari">शब्द ज्ञान</span>
+                        <span class="text-xs font-bold bg-purple-600 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Level 4 Card -->
+                <div onclick="switchTab('sentences')" class="card-3d bg-white p-5 rounded-3xl border-2 border-sky-200 hover:border-sky-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-sky-100 text-sky-900 font-extrabold text-xs rounded-full uppercase">Level 4</span>
+                        <span class="text-3xl">💬</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Sentences <span class="text-sky-800 font-devanagari">(छोटे वाक्य)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Read sentences aloud, record speech & get feedback.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-sky-600 font-devanagari">वाक्य वाचन</span>
+                        <span class="text-xs font-bold bg-sky-500 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Level 5 Card -->
+                <div onclick="switchTab('grammar')" class="card-3d bg-white p-5 rounded-3xl border-2 border-teal-200 hover:border-teal-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-teal-100 text-teal-900 font-extrabold text-xs rounded-full uppercase">Level 5</span>
+                        <span class="text-3xl">🧠</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Grammar <span class="text-teal-800 font-devanagari">(व्याकरण)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Nouns (संज्ञा), Pronouns (सर्वनाम) & Opposites (विलोम).</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-teal-600 font-devanagari">संज्ञा, सर्वनाम व विलोम</span>
+                        <span class="text-xs font-bold bg-teal-600 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Level 6 Card -->
+                <div onclick="switchTab('synonyms')" class="card-3d bg-white p-5 rounded-3xl border-2 border-rose-200 hover:border-rose-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-rose-100 text-rose-900 font-extrabold text-xs rounded-full uppercase">Level 6</span>
+                        <span class="text-3xl">💎</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Synonyms <span class="text-rose-800 font-devanagari">(समान अर्थ)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Learn words that have the same meaning (पर्यायवाची शब्द).</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-rose-600 font-devanagari">पर्यायवाची शब्द</span>
+                        <span class="text-xs font-bold bg-rose-500 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Level 7 Card -->
+                <div onclick="switchTab('reading')" class="card-3d bg-white p-5 rounded-3xl border-2 border-orange-200 hover:border-orange-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-orange-100 text-orange-900 font-extrabold text-xs rounded-full uppercase">Level 7</span>
+                        <span class="text-3xl">📖</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Short Stories <span class="text-orange-800 font-devanagari">(कहानियाँ)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Read and listen to fun short Hindi moral stories.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-orange-600 font-devanagari">कहानी पठन व श्रवण</span>
+                        <span class="text-xs font-bold bg-orange-500 text-white px-3 py-1 rounded-xl">Start ➔</span>
+                    </div>
+                </div>
+
+                <!-- Letter Tracing Card -->
+                <div onclick="switchTab('tracing')" class="card-3d bg-white p-5 rounded-3xl border-2 border-pink-200 hover:border-pink-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-pink-100 text-pink-900 font-extrabold text-xs rounded-full uppercase">Activity</span>
+                        <span class="text-3xl">✏️</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Letter Tracing <span class="text-pink-800 font-devanagari">(ट्रेसिंग)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Write and trace Hindi characters on an interactive pad.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-pink-600 font-devanagari">लिखने का अभ्यास</span>
+                        <span class="text-xs font-bold bg-pink-500 text-white px-3 py-1 rounded-xl">Practice ➔</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Game Card -->
+                <div onclick="switchTab('quiz')" class="card-3d bg-white p-5 rounded-3xl border-2 border-indigo-200 hover:border-indigo-400 cursor-pointer shadow-sm flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-900 font-extrabold text-xs rounded-full uppercase">Game</span>
+                        <span class="text-3xl">🎮</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-800">Fun Quiz <span class="text-indigo-800 font-devanagari">(मज़ेदार क्विज़)</span></h3>
+                        <p class="text-xs text-slate-500 font-medium">Test knowledge with interactive audio questions & earn stars!</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span class="text-xs font-black text-indigo-600 font-devanagari">अंक व इनाम</span>
+                        <span class="text-xs font-bold bg-indigo-600 text-white px-3 py-1 rounded-xl">Play ➔</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== LEVEL 1: VARNAMALA (LETTERS) ==================== -->
+        <section id="section-varnamala" class="tab-content hidden space-y-6">
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-3xl border-2 border-indigo-200/80 shadow-sm max-w-2xl mx-auto space-y-4">
+                <div class="flex items-center justify-between border-b border-indigo-100 pb-3">
+                    <span id="quiz-progress" class="text-xs font-black text-indigo-700 uppercase bg-indigo-100 px-3 py-1 rounded-full">Question 1 of 5</span>
+                    <div class="flex items-center space-x-2 bg-amber-100 border border-amber-300 px-3 py-1 rounded-2xl">
+                        <span class="text-lg">🏆</span>
+                        <span id="quiz-score" class="font-extrabold text-amber-900 text-sm">Score: 0</span>
+                    </div>
+                </div>
+
+                <div class="text-center py-4 space-y-3">
+                    <h3 id="quiz-question-text" class="text-2xl md:text-3xl font-black font-devanagari text-indigo-950">प्रश्न आ रहा है...</h3>
+                    <button onclick="playQuizPromptAudio()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-2xl shadow-sm inline-flex items-center space-x-2 active:scale-95 transition-all">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <span>फिर से सुनो (Listen Again)</span>
+                    </button>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-2 gap-4 pt-2">
+                    <!-- Javascript populates options -->
+                </div>
+                <div id="quiz-feedback" class="hidden p-4 rounded-2xl font-black font-devanagari text-lg text-center"></div>
+            </div>
+        </section>
+
+        <!-- Voice Recording Modal -->
+        <div id="record-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl border-4 border-rose-300 max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
+                <button onclick="closeRecordModal()" class="absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="text-center space-y-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-100 px-3 py-1 rounded-full">🎤 Pronunciation Practice</span>
+                    <h3 class="text-2xl font-black font-devanagari text-slate-800">आवाज़ रिकॉर्ड करें</h3>
+                </div>
+
+                <div class="p-4 bg-rose-50 border-2 border-rose-200 rounded-2xl text-center space-y-2">
+                    <p class="text-xs text-rose-700 font-bold uppercase">पढ़ने का वाक्य (Sentence to read):</p>
+                    <p id="target-sentence-text" class="text-2xl font-black font-devanagari text-slate-800 leading-snug">...</p>
+                    <button onclick="speakTargetSentence()" class="px-3 py-1 bg-rose-200 hover:bg-rose-300 text-rose-900 text-xs font-bold rounded-xl inline-flex items-center space-x-1">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <span>सही उच्चारण सुनो</span>
+                    </button>
+                </div>
+
+                <div id="mic-error-banner" class="hidden p-3 bg-amber-50 border-2 border-amber-300 rounded-2xl text-amber-900 text-xs space-y-2">
+                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm"></i> <span id="mic-error-text">माइक्रोफोन एक्सेस अस्वीकृत</span></p>
+                    <p class="text-[11px]">यदि आपका माइक्रोफ़ोन काम नहीं कर रहा है, तो आप <b>प्रैक्टिस मोड</b> से अभ्यास कर सकते हैं:</p>
+                    <button onclick="simulatePracticeSpeech()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow">
+                        🚀 प्रैक्टिस मोड (Practice Demo)
+                    </button>
+                </div>
+
+                <div class="flex flex-col items-center justify-center space-y-3 py-2">
+                    <button id="mic-record-btn" onclick="toggleRecording()" class="w-20 h-20 bg-rose-500 hover:bg-rose-600 text-white text-3xl rounded-full flex items-center justify-center shadow-lg transition-all active:scale-90">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                    <p id="record-status-label" class="text-sm font-extrabold text-slate-600 text-center px-4">माइक्रोफोन दबाएं और बोलना शुरू करें (Tap Mic to Start)</p>
+                </div>
+
+                <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-1">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">आपने बोला (Transcribed Text):</p>
+                    <p id="kid-speech-transcript" class="text-lg font-bold font-devanagari text-indigo-900">यहाँ आपकी बोली हुई आवाज़ दिखाई देगी...</p>
+                </div>
+
+                <div id="evaluation-box" class="hidden p-4 rounded-2xl border-2 space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <span id="eval-emoji" class="text-2xl">🌟</span>
+                        <h4 id="eval-title" class="font-extrabold font-devanagari text-lg">परिणाम</h4>
+                    </div>
+                    <p id="eval-feedback-text" class="text-sm font-semibold font-devanagari">फीडबैक यहाँ आएगा</p>
+                    <div id="word-match-display" class="flex flex-wrap gap-2 pt-2 border-t border-slate-200"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticker Reward Modal -->
+        <div id="sticker-reward-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl border-4 border-amber-400 max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative animate-bounce-slow" style="animation-duration: 0.5s; animation-iteration-count: 1;">
+                <div class="text-5xl animate-bounce">🎉 🎈 🎊</div>
+                <span class="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-black rounded-full uppercase tracking-wider">Level Completed!</span>
+                <h3 class="text-3xl font-black font-devanagari text-slate-800">बहुत बढ़िया! (Good Job!)</h3>
+                <p class="text-xs text-slate-500 font-bold">आपने यह लेवल पूरा कर लिया है! आपको नया स्टिकर मिला:</p>
+                
+                <div id="reward-sticker-card" class="p-4 bg-gradient-to-b from-amber-50 to-orange-100 border-4 border-amber-300 rounded-3xl shadow-lg transform rotate-2 inline-block mx-auto min-w-[200px]">
+                    <span id="reward-sticker-emoji" class="text-6xl block my-1">🌟</span>
+                    <h4 id="reward-sticker-title" class="text-2xl font-black font-devanagari text-amber-950">शाबाश!</h4>
+                    <p id="reward-sticker-desc" class="text-[11px] font-bold text-amber-800">Good Job Sticker</p>
+                </div>
+
+                <div class="flex items-center justify-center gap-2 pt-2">
+                    <button onclick="closeStickerRewardModal()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-black text-sm rounded-2xl shadow-md active:scale-95 transition-all w-full">
+                        आगे बढ़ें (Continue) 🚀
+                    </button>
+                    <button onclick="closeStickerRewardModal(); openStickerAlbum();" class="px-4 py-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold text-xs rounded-2xl transition-all whitespace-nowrap">
+                        एल्बम देखें 🏆
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticker Album Modal -->
+        <div id="sticker-album-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl border-4 border-indigo-300 max-w-2xl w-full p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closeStickerAlbum()" class="absolute top-4 right-4 w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="text-center space-y-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">🏆 Rewards & Badges</span>
+                    <h3 class="text-2xl font-black font-devanagari text-slate-800">आपका स्टिकर एल्बम (Sticker Album)</h3>
+                    <p class="text-xs text-slate-500 font-medium">अलग-अलग लेवल और क्विज़ पूरे करके सारे स्टिकर कलेक्ट करें!</p>
+                </div>
+
+                <div id="sticker-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Global State Variables
+        let starCount = 0;
+        let unlockedStickers = [];
+        let currentTab = 'varnamala';
+        let currentGrammarTab = 'sangya';
+        let currentShabdCategory = 'animals';
+        let isAudioMuted = false;
+        let isHoverAudioEnabled = true;
+
+        // Tracing State
+        let selectedTracingChar = 'अ';
+        let brushColor = '#f43f5e';
+        let isDrawing = false;
+        let canvas = null;
+        let ctx = null;
+
+        // Quiz State
+        let quizQuestions = [];
+        let currentQuestionIdx = 0;
+        let quizScore = 0;
+        let currentQuizItem = null;
+
+        // Speech Recognition State
+        let speechRecognizer = null;
+        let isRecording = false;
+        let currentTargetSentence = "";
+
+        const VARNAMALA_DATA = [
+            // Swar (Vowels)
+            { type: 'swar', letter: 'अ', word: 'अनार', eng: 'Pomegranate', translit: 'Anaar', emoji: '🍎' },
+            { type: 'swar', letter: 'आ', word: 'आम', eng: 'Mango', translit: 'Aam', emoji: '🥭' },
+            { type: 'swar', letter: 'इ', word: 'इमली', eng: 'Tamarind', translit: 'Imli', emoji: '🟤' },
+            { type: 'swar', letter: 'ई', word: 'ईख', eng: 'Sugarcane', translit: 'Eekh', emoji: '🌾' },
+            { type: 'swar', letter: 'उ', word: 'उल्लू', eng: 'Owl', translit: 'Ullu', emoji: '🦉' },
+            { type: 'swar', letter: 'ऊ', word: 'ऊन', eng: 'Wool', translit: 'Oon', emoji: '🧶' },
+            { type: 'swar', letter: 'ऋ', word: 'ऋषि', eng: 'Sage', translit: 'Rishi', emoji: '🧘' },
+            { type: 'swar', letter: 'ए', word: 'एड़ी', eng: 'Heel', translit: 'Edi', emoji: '🦶' },
+            { type: 'swar', letter: 'ऐ', word: 'ऐनक', eng: 'Spectacles', translit: 'Ainak', emoji: '👓' },
+            { type: 'swar', letter: 'ओ', word: 'ओखली', eng: 'Mortar', translit: 'Okhli', emoji: '🥣' },
+            { type: 'swar', letter: 'औ', word: 'औरत', eng: 'Woman', translit: 'Aurat', emoji: '👩' },
+            { type: 'swar', letter: 'अं', word: 'अंगूर', eng: 'Grapes', translit: 'Angoor', emoji: '🍇' },
+            { type: 'swar', letter: 'अः', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+
+            // Vyanjan (Consonants)
+            { type: 'vyanjan', letter: 'क', word: 'कबूतर', eng: 'Pigeon', translit: 'Kabootar', emoji: '🕊️' },
+            { type: 'vyanjan', letter: 'ख', word: 'खरगोश', eng: 'Rabbit', translit: 'Khargosh', emoji: '🐇' },
+            { type: 'vyanjan', letter: 'ग', word: 'गमला', eng: 'Flowerpot', translit: 'Gamla', emoji: '🪴' },
+            { type: 'vyanjan', letter: 'घ', word: 'घड़ी', eng: 'Clock', translit: 'Ghadi', emoji: '⏰' },
+            { type: 'vyanjan', letter: 'ङ', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'vyanjan', letter: 'च', word: 'चम्मच', eng: 'Spoon', translit: 'Chammach', emoji: '🥄' },
+            { type: 'vyanjan', letter: 'छ', word: 'छाता', eng: 'Umbrella', translit: 'Chhaata', emoji: '☂️' },
+            { type: 'vyanjan', letter: 'ज', word: 'जहाज', eng: 'Ship', translit: 'Jahaaz', emoji: '🚢' },
+            { type: 'vyanjan', letter: 'झ', word: 'झंडा', eng: 'Flag', translit: 'Jhanda', emoji: '🇮🇳' },
+            { type: 'vyanjan', letter: 'ञ', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'vyanjan', letter: 'ट', word: 'टमाटर', eng: 'Tomato', translit: 'Tamaatar', emoji: '🍅' },
+            { type: 'vyanjan', letter: 'ठ', word: 'ठठेरा', eng: 'Tinker', translit: 'Thathera', emoji: '🔨' },
+            { type: 'vyanjan', letter: 'ड', word: 'डमरू', eng: 'Drum', translit: 'Damru', emoji: '🪘' },
+            { type: 'vyanjan', letter: 'ढ', word: 'ढोलक', eng: 'Dholak', translit: 'Dholak', emoji: '🥁' },
+            { type: 'vyanjan', letter: 'ण', word: 'खाली', eng: 'Empty', translit: 'Khaali', emoji: '⚪' },
+            { type: 'vyanjan', letter: 'त', word: 'तरबूज', eng: 'Watermelon', translit: 'Tarbooz', emoji: '🍉' },
+            { type: 'vyanjan', letter: 'थ', word: 'थर्मामीटर', eng: 'Thermometer', translit: 'Thermometer', emoji: '🌡️' },
+            { type: 'vyanjan', letter: 'द', word: 'दवात', eng: 'Inkpot', translit: 'Dawaat', emoji: '🖋️' },
+            { type: 'vyanjan', letter: 'ध', word: 'धनुष', eng: 'Bow', translit: 'Dhanush', emoji: '🏹' },
+            { type: 'vyanjan', letter: 'न', word: 'नल', eng: 'Tap', translit: 'Nal', emoji: '🚰' },
+            { type: 'vyanjan', letter: 'प', word: 'पतंग', eng: 'Kite', translit: 'Patang', emoji: '🪁' },
+            { type: 'vyanjan', letter: 'फ', word: 'फल', eng: 'Fruits', translit: 'Fal', emoji: '🍎' },
+            { type: 'vyanjan', letter: 'ब', word: 'बस', eng: 'Bus', translit: 'Bus', emoji: '🚌' },
+            { type: 'vyanjan', letter: 'भ', word: 'भालू', eng: 'Bear', translit: 'Bhaalu', emoji: '🐻' },
+            { type: 'vyanjan', letter: 'म', word: 'मछली', eng: 'Fish', translit: 'Machhli', emoji: '🐟' },
+            { type: 'vyanjan', letter: 'य', word: 'यज्ञ', eng: 'Yajna', translit: 'Yajna', emoji: '🔥' },
+            { type: 'vyanjan', letter: 'र', word: 'रथ', eng: 'Chariot', translit: 'Rath', emoji: '🛞' },
+            { type: 'vyanjan', letter: 'ल', word: 'लट्टू', eng: 'Spinning Top', translit: 'Lattuu', emoji: '🪀' },
+            { type: 'vyanjan', letter: 'व', word: 'वक', eng: 'Heron', translit: 'Vak', emoji: '🦢' },
+            { type: 'vyanjan', letter: 'श', word: 'शलजम', eng: 'Turnip', translit: 'Shaljam', emoji: '🧅' },
+            { type: 'vyanjan', letter: 'ष', word: 'षट्कोण', eng: 'Hexagon', translit: 'Shatkon', emoji: '⬢' },
+            { type: 'vyanjan', letter: 'स', word: 'सपेरा', eng: 'Snake Charmer', translit: 'Sapera', emoji: '🐍' },
+            { type: 'vyanjan', letter: 'ह', word: 'हाथी', eng: 'Elephant', translit: 'Haathi', emoji: '🐘' },
+            { type: 'vyanjan', letter: 'क्ष', word: 'क्षत्रिय', eng: 'Warrior', translit: 'Kshatriya', emoji: '⚔️' },
+            { type: 'vyanjan', letter: 'त्र', word: 'त्रिशूल', eng: 'Trident', translit: 'Trishul', emoji: '🔱' },
+            { type: 'vyanjan', letter: 'ज्ञ', word: 'ज्ञानी', eng: 'Scholar', translit: 'Gyaani', emoji: '👨‍🏫' }
+        ];
+
+        const GINTI_DATA = [
+            { hindiDigit: '१', engDigit: 1, hindiWord: 'एक', translit: 'Ek', emoji: '🍎' },
+            { hindiDigit: '२', engDigit: 2, hindiWord: 'दो', translit: 'Do', emoji: '🎈' },
+            { hindiDigit: '३', engDigit: 3, hindiWord: 'तीन', translit: 'Teen', emoji: '🐱' },
+            { hindiDigit: '४', engDigit: 4, hindiWord: 'चार', translit: 'Chaar', emoji: '🚗' },
+            { hindiDigit: '५', engDigit: 5, hindiWord: 'पाँच', translit: 'Paanch', emoji: '🖐️' },
+            { hindiDigit: '६', engDigit: 6, hindiWord: 'छह', translit: 'Chhah', emoji: '🎲' },
+            { hindiDigit: '७', engDigit: 7, hindiWord: 'सात', translit: 'Saat', emoji: '🌈' },
+            { hindiDigit: '८', engDigit: 8, hindiWord: 'आठ', translit: 'Aath', emoji: '🐙' },
+            { hindiDigit: '९', engDigit: 9, hindiWord: 'नौ', translit: 'Nau', emoji: '🍇' },
+            { hindiDigit: '१०', engDigit: 10, hindiWord: 'दस', translit: 'Das', emoji: '🔟' },
+            { hindiDigit: '११', engDigit: 11, hindiWord: 'ग्यारह', translit: 'Gyaarah', emoji: '⭐' },
+            { hindiDigit: '१२', engDigit: 12, hindiWord: 'बारह', translit: 'Baarah', emoji: '🍌' },
+            { hindiDigit: '१३', engDigit: 13, hindiWord: 'तेरह', translit: 'Terah', emoji: '🌸' },
+            { hindiDigit: '१४', engDigit: 14, hindiWord: 'चौदह', translit: 'Chaudah', emoji: '⚽' },
+            { hindiDigit: '१५', engDigit: 15, hindiWord: 'पंद्रह', translit: 'Pandrah', emoji: '🍦' },
+            { hindiDigit: '१६', engDigit: 16, hindiWord: 'सोलह', translit: 'Solah', emoji: '🎁' },
+            { hindiDigit: '१७', engDigit: 17, hindiWord: 'सत्रह', translit: 'Satrah', emoji: '🦋' },
+            { hindiDigit: '१८', engDigit: 18, hindiWord: 'अठारह', translit: 'Athaarah', emoji: '🍭' },
+            { hindiDigit: '१९', engDigit: 19, hindiWord: 'उन्नीस', translit: 'Unnees', emoji: '🐣' },
+            { hindiDigit: '२०', engDigit: 20, hindiWord: 'बीस', translit: 'Bees', emoji: '🏆' },
+            { hindiDigit: '२१', engDigit: 21, hindiWord: 'इक्कीस', translit: 'Ikkees', emoji: '🔔' },
+            { hindiDigit: '२२', engDigit: 22, hindiWord: 'बाईस', translit: 'Baarees', emoji: '💎' },
+            { hindiDigit: '२३', engDigit: 23, hindiWord: 'तेईस', translit: 'Tees', emoji: '🕯️' },
+            { hindiDigit: '२४', engDigit: 24, hindiWord: 'चौबीस', translit: 'Chaubees', emoji: '🔑' },
+            { hindiDigit: '२५', engDigit: 25, hindiWord: 'पच्चीस', translit: 'Pachchees', emoji: '🥇' },
+            { hindiDigit: '२६', engDigit: 26, hindiWord: 'छब्बीस', translit: 'Chhabbees', emoji: '🎯' },
+            { hindiDigit: '२७', engDigit: 27, hindiWord: 'सत्ताईस', translit: 'Sattaabees', emoji: '🚀' },
+            { hindiDigit: '२८', engDigit: 28, hindiWord: 'अट्ठाईस', translit: 'Atthaabees', emoji: '🚁' },
+            { hindiDigit: '२९', engDigit: 29, hindiWord: 'उनत्तीस', translit: 'Unattees', emoji: '⛵' },
+            { hindiDigit: '३०', engDigit: 30, hindiWord: 'तीस', translit: 'Tees', emoji: '👑' },
+            { hindiDigit: '३१', engDigit: 31, hindiWord: 'इकत्तीस', translit: 'Ikkattees', emoji: '🎨' },
+            { hindiDigit: '३२', engDigit: 32, hindiWord: 'बत्तीस', translit: 'Battees', emoji: '🎸' },
+            { hindiDigit: '३३', engDigit: 33, hindiWord: 'तैंतीस', translit: 'Taintees', emoji: '🎺' },
+            { hindiDigit: '३४', engDigit: 34, hindiWord: 'चौंतीस', translit: 'Chauntees', emoji: '🎻' },
+            { hindiDigit: '३५', engDigit: 35, hindiWord: 'पैंतीस', translit: 'Paintees', emoji: '🏀' },
+            { hindiDigit: '३६', engDigit: 36, hindiWord: 'छत्तीस', translit: 'Chhattees', emoji: '🎾' },
+            { hindiDigit: '३७', engDigit: 37, hindiWord: 'सैंतीस', translit: 'Saintees', emoji: '🏓' },
+            { hindiDigit: '३८', engDigit: 38, hindiWord: 'अड़तीस', translit: 'Adtees', emoji: '🏸' },
+            { hindiDigit: '३९', engDigit: 39, hindiWord: 'उनतालीस', translit: 'Unataalees', emoji: '🥊' },
+            { hindiDigit: '४०', engDigit: 40, hindiWord: 'चालीस', translit: 'Chaalees', emoji: '🎖️' },
+            { hindiDigit: '४१', engDigit: 41, hindiWord: 'इकतालीस', translit: 'Ikataalees', emoji: '🪐' },
+            { hindiDigit: '४२', engDigit: 42, hindiWord: 'बयालीस', translit: 'Bayaalees', emoji: '🌟' },
+            { hindiDigit: '४३', engDigit: 43, hindiWord: 'तिन्तालीस', translit: 'Tintaalees', emoji: '💥' },
+            { hindiDigit: '४४', engDigit: 44, hindiWord: 'चवालीस', translit: 'Chawaalees', emoji: '🔥' },
+            { hindiDigit: '४५', engDigit: 45, hindiWord: 'पैंतालीस', translit: 'Paintaalees', emoji: '✨' },
+            { hindiDigit: '४६', engDigit: 46, hindiWord: 'छियालीस', translit: 'Chhiyaalees', emoji: '🌻' },
+            { hindiDigit: '४७', engDigit: 47, hindiWord: 'सैंतालीस', translit: 'Saintaalees', emoji: '🌼' },
+            { hindiDigit: '४८', engDigit: 48, hindiWord: 'अड़तालीस', translit: 'Adtaalees', emoji: '🌷' },
+            { hindiDigit: '४९', engDigit: 49, hindiWord: 'उनचास', translit: 'Unchaas', emoji: '🌺' },
+            { hindiDigit: '५०', engDigit: 50, hindiWord: 'पचास', translit: 'Pachaas', emoji: '🎉' }
+        ];
+
+        const SHABD_DATA = {
+            animals: [
+                { hindi: 'कुत्ता', eng: 'Dog', translit: 'Kutta', emoji: '🐕' },
+                { hindi: 'बिल्ली', eng: 'Cat', translit: 'Billi', emoji: '🐱' },
+                { hindi: 'हाथी', eng: 'Elephant', translit: 'Haathi', emoji: '🐘' },
+                { hindi: 'शेर', eng: 'Lion', translit: 'Sher', emoji: '🦁' },
+                { hindi: 'गाय', eng: 'Cow', translit: 'Gaay', emoji: '🐮' },
+                { hindi: 'घोड़ा', eng: 'Horse', translit: 'Ghoda', emoji: '🐎' },
+                { hindi: 'बंदर', eng: 'Monkey', translit: 'Bandar', emoji: '🐒' },
+                { hindi: 'खरगोश', eng: 'Rabbit', translit: 'Khargosh', emoji: '🐰' },
+                { hindi: 'भालू', eng: 'Bear', translit: 'Bhaalu', emoji: '🐻' },
+                { hindi: 'हिरण', eng: 'Deer', translit: 'Hiran', emoji: '🦌' }
+            ],
+            fruits: [
+                { hindi: 'सेब', eng: 'Apple', translit: 'Seb', emoji: '🍎' },
+                { hindi: 'केला', eng: 'Banana', translit: 'Kela', emoji: '🍌' },
+                { hindi: 'आम', eng: 'Mango', translit: 'Aam', emoji: '🥭' },
+                { hindi: 'अंगूर', eng: 'Grapes', translit: 'Angoor', emoji: '🍇' },
+                { hindi: 'तरबूज', eng: 'Watermelon', translit: 'Tarbooz', emoji: '🍉' },
+                { hindi: 'संतरा', eng: 'Orange', translit: 'Santara', emoji: '🍊' },
+                { hindi: 'आलू', eng: 'Potato', translit: 'Aaloo', emoji: '🥔' },
+                { hindi: 'टमाटर', eng: 'Tomato', translit: 'Tamaatar', emoji: '🍅' },
+                { hindi: 'गाजर', eng: 'Carrot', translit: 'Gaajar', emoji: '🥕' },
+                { hindi: 'बैंगन', eng: 'Eggplant', translit: 'Baingan', emoji: '🍆' }
+            ],
+            things: [
+                { hindi: 'किताब', eng: 'Book', translit: 'Kitaab', emoji: '📚' },
+                { hindi: 'कलम', eng: 'Pen', translit: 'Kalam', emoji: '🖊️' },
+                { hindi: 'कुर्सी', eng: 'Chair', translit: 'Kursi', emoji: '🪑' },
+                { hindi: 'मेज़', eng: 'Table', translit: 'Mez', emoji: '🪵' },
+                { hindi: 'बैग', eng: 'Bag', translit: 'Bag', emoji: '🎒' },
+                { hindi: 'खिलौना', eng: 'Toy', translit: 'Khilauna', emoji: '🧸' },
+                { hindi: 'घड़ी', eng: 'Clock', translit: 'Ghadi', emoji: '⏰' },
+                { hindi: 'बोतल', eng: 'Bottle', translit: 'Botal', emoji: '🍾' },
+                { hindi: 'चश्मा', eng: 'Spectacles', translit: 'Chashma', emoji: '👓' },
+                { hindi: 'छाता', eng: 'Umbrella', translit: 'Chhaata', emoji: '☂️' }
+            ],
+            colors: [
+                { hindi: 'लाल', eng: 'Red', translit: 'Laal', emoji: '🔴' },
+                { hindi: 'नीला', eng: 'Blue', translit: 'Neela', emoji: '🔵' },
+                { hindi: 'हरा', eng: 'Green', translit: 'Hara', emoji: '🟢' },
+                { hindi: 'पीला', eng: 'Yellow', translit: 'Peela', emoji: '🟡' },
+                { hindi: 'नारंगी', eng: 'Orange', translit: 'Naarangi', emoji: '🟠' },
+                { hindi: 'बैंगनी', eng: 'Purple', translit: 'Baingani', emoji: '🟣' },
+                { hindi: 'सफ़ेद', eng: 'White', translit: 'Safed', emoji: '⚪' },
+                { hindi: 'काला', eng: 'Black', translit: 'Kaala', emoji: '⚫' }
+            ],
+            shapes: [
+                { hindi: 'गोला', eng: 'Circle', translit: 'Gola', emoji: '🔴' },
+                { hindi: 'वर्ग', eng: 'Square', translit: 'Varg', emoji: '🟧' },
+                { hindi: 'त्रिकोण', eng: 'Triangle', translit: 'Trikon', emoji: '📐' },
+                { hindi: 'षट्कोण', eng: 'Hexagon', translit: 'Shatkon', emoji: '⬢' },
+                { hindi: 'तारा', eng: 'Star', translit: 'Taara', emoji: '⭐' },
+                { hindi: 'दिल', eng: 'Heart', translit: 'Dil', emoji: '🤍' }
+            ]
+        };
+
+        const GRAMMAR_DATA = {
+            sangya: {
+                title: 'संज्ञा (Noun)',
+                desc: 'किसी व्यक्ति, वस्तु, स्थान या जानवर के नाम को संज्ञा कहते हैं।',
+                englishDesc: 'A Noun is the name of a person, place, thing, or animal.',
+                categories: [
+                    {
+                        type: 'व्यक्ति (Person)',
+                        items: [
+                            { hindi: 'राम', eng: 'Ram', emoji: '👦' },
+                            { hindi: 'सीता', eng: 'Sita', emoji: '👧' },
+                            { hindi: 'डॉक्टर', eng: 'Doctor', emoji: '👨‍⚕️' },
+                            { hindi: 'शिक्षक', eng: 'Teacher', emoji: '👨‍🏫' }
+                        ]
+                    },
+                    {
+                        type: 'स्थान (Place)',
+                        items: [
+                            { hindi: 'घर', eng: 'House', emoji: '🏠' },
+                            { hindi: 'स्कूल', eng: 'School', emoji: '🏫' },
+                            { hindi: 'पार्क', eng: 'Park', emoji: '🏞️' },
+                            { hindi: 'भारत', eng: 'India', emoji: '🇮🇳' }
+                        ]
+                    },
+                    {
+                        type: 'वस्तु (Thing)',
+                        items: [
+                            { hindi: 'किताब', eng: 'Book', emoji: '📚' },
+                            { hindi: 'कलम', eng: 'Pen', emoji: '🖊️' },
+                            { hindi: 'गेंद', eng: 'Ball', emoji: '⚽' },
+                            { hindi: 'गाड़ी', eng: 'Car', emoji: '🚗' }
+                        ]
+                    },
+                    {
+                        type: 'जानवर (Animal)',
+                        items: [
+                            { hindi: 'गाय', eng: 'Cow', emoji: '🐮' },
+                            { hindi: 'शेर', eng: 'Lion', emoji: '🦁' },
+                            { hindi: 'कुत्ता', eng: 'Dog', emoji: '🐕' },
+                            { hindi: 'चिड़िया', eng: 'Bird', emoji: '🐦' }
+                        ]
+                    }
+                ]
+            },
+            sarvnam: {
+                title: 'सर्वनाम (Pronoun)',
+                desc: 'जो शब्द संज्ञा के स्थान पर प्रयोग किए जाते हैं, उन्हें सर्वनाम कहते हैं।',
+                englishDesc: 'Pronouns are words used in place of nouns.',
+                items: [
+                    { hindi: 'मैं', eng: 'I', translit: 'Main', example: 'मैं पढ़ रहा हूँ।', emoji: '🙋‍♂️' },
+                    { hindi: 'तुम', eng: 'You (Informal)', translit: 'Tum', example: 'तुम कैसे हो?', emoji: '👉' },
+                    { hindi: 'आप', eng: 'You (Respectful)', translit: 'Aap', example: 'आप बहुत अच्छे हैं।', emoji: '🙏' },
+                    { hindi: 'वह', eng: 'He / She / That', translit: 'Vah', example: 'वह मेरा मित्र है।', emoji: '👦' },
+                    { hindi: 'हम', eng: 'We', translit: 'Hum', example: 'हम खेल रहे हैं।', emoji: '👨‍👩‍👧‍👦' },
+                    { hindi: 'यह', eng: 'This / It', translit: 'Yah', example: 'यह सुंदर फूल है।', emoji: '🌸' }
+                ]
+            },
+            vilom: {
+                title: 'विलोम शब्द (Opposites)',
+                desc: 'एक-दूसरे का उल्टा अर्थ बताने वाले शब्दों को विलोम शब्द कहते हैं।',
+                englishDesc: 'Words with opposite meanings.',
+                pairs: [
+                    { word1: 'बड़ा', eng1: 'Big', emoji1: '🐘', word2: 'छोटा', eng2: 'Small', emoji2: '🐭' },
+                    { word1: 'दिन', eng1: 'Day', emoji1: '☀️', word2: 'रात', eng2: 'Night', emoji2: '🌙' },
+                    { word1: 'गरम', eng1: 'Hot', emoji1: '☕', word2: 'ठंडा', eng2: 'Cold', emoji2: '🍦' },
+                    { word1: 'ऊपर', eng1: 'Up', emoji1: '⬆️', word2: 'नीचे', eng2: 'Down', emoji2: '⬇️' },
+                    { word1: 'खुश', eng1: 'Happy', emoji1: '😊', word2: 'उदासा', eng2: 'Sad', emoji2: '😢' },
+                    { word1: 'अंदर', eng1: 'In', emoji1: '📥', word2: 'बाहर', eng2: 'Out', emoji2: '📤' },
+                    { word1: 'नया', eng1: 'New', emoji1: '✨', word2: 'पुराना', eng2: 'Old', emoji2: '📦' },
+                    { word1: 'सच', eng1: 'Truth', emoji1: '✔️', word2: 'झूठ', eng2: 'Lie', emoji2: '❌' }
+                ]
+            }
+        };
+
+        const SMALL_SENTENCES_DATA = [
+            { text: 'यह मेरा प्यारा घर है।', eng: 'This is my sweet home.', emoji: '🏠' },
+            { text: 'सूरज पूर्व में उगता है।', eng: 'Sun rises in the east.', emoji: '☀️' },
+            { text: 'गाय हमें मीठा दूध देती है।', eng: 'Cow gives us sweet milk.', emoji: '🐮' },
+            { text: 'मोर जंगल में नाचता है।', eng: 'Peacock dances in forest.', emoji: '🦚' },
+            { text: 'बच्चे मैदान में खेलते हैं।', eng: 'Kids play in the playground.', emoji: '⚽' },
+            { text: 'सफ़ेद बिल्ली दूध पीती है।', eng: 'White cat drinks milk.', emoji: '🐱' },
+            { text: 'हम रोज़ स्कूल जाते हैं।', eng: 'We go to school daily.', emoji: '🏫' },
+            { text: 'बाग़ में सुंदर फूल खिले हैं।', eng: 'Beautiful flowers bloom in garden.', emoji: '🌸' }
+        ];
+
+        const SYNONYMS_DATA = [
+            { mainWord: 'पानी', eng: 'Water', synonyms: ['जल', 'नीर'], emoji: '💧' },
+            { mainWord: 'सूर्य', eng: 'Sun', synonyms: ['सूरज', 'दिनकर'], emoji: '☀️' },
+            { mainWord: 'पेड़', eng: 'Tree', synonyms: ['वृक्ष', 'तरु'], emoji: '🌳' },
+            { mainWord: 'घर', eng: 'House', synonyms: ['मकान', 'गृह'], emoji: '🏠' },
+            { mainWord: 'आँख', eng: 'Eye', synonyms: ['नयन', 'नेत्र'], emoji: '👁️' },
+            { mainWord: 'हवा', eng: 'Wind/Air', synonyms: ['पवन', 'वायु'], emoji: '💨' },
+            { mainWord: 'राजा', eng: 'King', synonyms: ['नृप', 'सम्राट'], emoji: '👑' },
+            { mainWord: 'फूल', eng: 'Flower', synonyms: ['पुष्प', 'सुमन'], emoji: '🌸' },
+            { mainWord: 'आकाश', eng: 'Sky', synonyms: ['गगन', 'अंबर'], emoji: '☁️' },
+            { mainWord: 'माता', eng: 'Mother', synonyms: ['माँ', 'जननी'], emoji: '👩' }
+        ];
+
+        const READING_PASSAGES = [
+            {
+                id: 'fox_crow',
+                title: 'चालाक लोमड़ी और कौवा',
+                emoji: '🦊',
+                theme: 'from-amber-50 to-orange-50 border-amber-200',
+                sentences: [
+                    'एक कौवे को रोटी का टुकड़ा मिला।',
+                    'वह पेड़ की डाल पर बैठ गया।',
+                    'एक चालाक लोमड़ी वहाँ आई।',
+                    'लोमड़ी ने कौवे के गाने की तारीफ़ की।',
+                    'कौवे ने गाने के लिए मुँह खोला और रोटी गिर गई।',
+                    'लोमड़ी रोटी लेकर भाग गई।'
+                ]
+            },
+            {
+                id: 'my_india',
+                title: 'मेरा प्यारा भारत',
+                emoji: '🇮🇳',
+                theme: 'from-blue-50 to-sky-50 border-sky-200',
+                sentences: [
+                    'भारत हमारा प्यारा देश है।',
+                    'यहाँ बहुत सी नदियाँ बहती हैं।',
+                    'हिमालय भारत का मुकुट है।',
+                    'हम सब मिलकर प्यार से रहते हैं।',
+                    'मुझे अपने भारत पर गर्व है।'
+                ]
+            }
+        ];
+
+        const STICKERS_DATA = [
+            { id: 'stk_l1', level: 'L1', emoji: '🔤', title: 'अक्षर ज्ञानी!', engTitle: 'Letter Master', desc: 'Level 1 complete! वर्णमाला सीखी!', req: 'Complete Level 1: Letters' },
+            { id: 'stk_l2', level: 'L2', emoji: '🔢', title: 'गिनती राजा!', engTitle: 'Number Star', desc: 'Level 2 complete! 1-50 गिनती सीखी!', req: 'Complete Level 2: Numbers' },
+            { id: 'stk_l3', level: 'L3', emoji: '🍎', title: 'शब्द पंडित!', engTitle: 'Vocab Genius', desc: 'Level 3 complete! शब्द सीखे!', req: 'Complete Level 3: Words' },
+            { id: 'stk_l4', level: 'L4', emoji: '💬', title: 'वाक्य रक्षक!', engTitle: 'Sentence Master', desc: 'Level 4 complete! वाक्य पढ़े!', req: 'Complete Level 4: Sentences' },
+            { id: 'stk_l5', level: 'L5', emoji: '🧠', title: 'व्याकरण गुरु!', engTitle: 'Grammar Champ', desc: 'Level 5 complete! व्याकरण सीखा!', req: 'Complete Level 5: Grammar' },
+            { id: 'stk_l6', level: 'L6', emoji: '💎', title: 'पर्यायवाची हीरो!', engTitle: 'Synonym Wizard', desc: 'Level 6 complete! समान अर्थ सीखे!', req: 'Complete Level 6: Synonyms' },
+            { id: 'stk_l7', level: 'L7', emoji: '📖', title: 'कहानी सम्राट!', engTitle: 'Story Champ', desc: 'Level 7 complete! कहानियाँ पढ़ी!', req: 'Complete Level 7: Stories' },
+            { id: 'stk_quiz', level: 'Quiz', emoji: '👑', title: 'क्विज़ विजार्ड!', engTitle: 'Quiz Wizard', desc: 'क्विज़ में जीत हासिल की!', req: 'Complete Quiz' },
+            { id: 'stk_star5', level: 'Star', emoji: '⭐', title: 'सुपर स्टार!', engTitle: 'Superstar', desc: '5 स्टार प्राप्त किए!', req: 'Earn 5 Points' },
+            { id: 'stk_star10', level: 'Star', emoji: '🏆', title: 'ग्रैंड चैंपियन!', engTitle: 'Grand Champion', desc: '10 स्टार प्राप्त किए!', req: 'Earn 10 Points' }
+        ];
+
+        function speakHindiText(text, isHover = false) {
+            if (isAudioMuted) return;
+            if (isHover && !isHoverAudioEnabled) return;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'hi-IN';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function playSfx(type) {
+            if (isAudioMuted) return;
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'pop') {
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'correct') {
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(140, audioCtx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'star') {
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.2);
+                }
+            } catch(e) {}
+        }
+
+        function filterVarnamala(type) {
+            playSfx('pop');
+            document.querySelectorAll('.varna-filter-btn').forEach(btn => {
+                btn.className = "varna-filter-btn px-3 py-1.5 rounded-2xl text-xs font-bold bg-amber-100 text-amber-800 hover:bg-amber-200";
+            });
+            const activeBtn = document.getElementById('varna-btn-' + type);
+            if (activeBtn) {
+                activeBtn.className = "varna-filter-btn px-3 py-1.5 rounded-2xl text-xs font-bold bg-amber-500 text-white shadow-sm";
+            }
+            renderVarnamalaGrid(type);
+        }
+
+        function renderVarnamalaGrid(filterType = 'all') {
+            const container = document.getElementById('varnamala-grid');
+            if (!container) return;
+
+            let filtered = VARNAMALA_DATA;
+            if (filterType === 'swar') filtered = VARNAMALA_DATA.filter(i => i.type === 'swar');
+            else if (filterType === 'vyanjan') filtered = VARNAMALA_DATA.filter(i => i.type === 'vyanjan');
+
+            container.innerHTML = filtered.map((item, idx) => `
+                <div onclick="speakVarnamalaItem(${idx})" onmouseenter="speakVarnamalaItem(${idx}, true)" class="glass-card card-3d p-4 rounded-3xl border-2 border-amber-200/80 hover:border-amber-400 bg-white cursor-pointer flex flex-col items-center justify-between text-center space-y-2 shadow-sm">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${item.type === 'swar' ? 'bg-amber-100 text-amber-800' : 'bg-orange-100 text-orange-800'}">${item.type}</span>
+                        <span class="text-xl">${item.emoji}</span>
+                    </div>
+                    <h3 class="text-5xl font-black font-devanagari text-amber-900 leading-none my-1">${item.letter}</h3>
+                    <div class="w-full pt-1 border-t border-amber-100">
+                        <p class="text-base font-black font-devanagari text-slate-800 leading-tight">${item.word}</p>
+                        <p class="text-[10px] font-bold text-slate-400">"${item.translit}"</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function speakVarnamalaItem(idx, isHover = false) {
+            const item = VARNAMALA_DATA[idx];
+            if (!item) return;
+            if (!isHover) addStar();
+            speakHindiText(`${item.letter} से ${item.word}`, isHover);
+        }
+
+        function renderGintiGrid() {
+            const container = document.getElementById('ginti-grid');
+            if (!container) return;
+
+            container.innerHTML = GINTI_DATA.map((item, idx) => `
+                <div onclick="speakGintiItem(${idx})" onmouseenter="speakGintiItem(${idx}, true)" class="glass-card card-3d p-4 rounded-3xl border-2 border-emerald-200/80 hover:border-emerald-400 bg-white cursor-pointer flex flex-col items-center justify-between text-center space-y-2 shadow-sm">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">#${item.engDigit}</span>
+                        <span class="text-xl">${item.emoji}</span>
+                    </div>
+                    <h3 class="text-4xl font-black font-devanagari text-emerald-900">${item.hindiDigit}</h3>
+                    <div class="w-full pt-1 border-t border-emerald-100">
+                        <p class="text-base font-black font-devanagari text-slate-800">${item.hindiWord}</p>
+                        <p class="text-[11px] font-bold text-slate-400">"${item.translit}"</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function speakGintiItem(idx, isHover = false) {
+            const item = GINTI_DATA[idx];
+            if (!item) return;
+            if (!isHover) addStar();
+            speakHindiText(`${item.hindiWord}. ${item.engDigit}`, isHover);
+        }
+
+        function filterShabd(category) {
+            playSfx('pop');
+            currentShabdCategory = category;
+            document.querySelectorAll('.shabd-nav-btn').forEach(btn => {
+                btn.className = "shabd-nav-btn px-3 py-1.5 rounded-2xl font-bold text-xs bg-purple-100 text-purple-800 hover:bg-purple-200";
+            });
+            const activeShabdBtn = document.getElementById('shabd-btn-' + category);
+            if (activeShabdBtn) {
+                activeShabdBtn.className = "shabd-nav-btn px-3 py-1.5 rounded-2xl font-bold text-xs bg-purple-600 text-white shadow-md";
+            }
+            renderShabdGrid();
+        }
+
+        function renderShabdGrid() {
+            const container = document.getElementById('shabd-grid');
+            if (!container) return;
+            const items = SHABD_DATA[currentShabdCategory] || [];
+
+            container.innerHTML = items.map((item, idx) => `
+                <div onclick="speakShabdItem(${idx})" onmouseenter="speakShabdItem(${idx}, true)" class="glass-card card-3d p-5 rounded-3xl border-2 border-purple-200/80 hover:border-purple-400 bg-white cursor-pointer flex flex-col items-center justify-between text-center space-y-2 shadow-sm">
+                    <span class="text-5xl block animate-bounce-slow">${item.emoji}</span>
+                    <h3 class="text-2xl font-black font-devanagari text-purple-900">${item.hindi}</h3>
+                    <div class="w-full pt-1 border-t border-purple-100">
+                        <p class="text-xs font-bold text-slate-500">${item.eng} ("${item.translit}")</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function speakShabdItem(idx, isHover = false) {
+            const items = SHABD_DATA[currentShabdCategory] || [];
+            if (items[idx]) {
+                if (!isHover) addStar();
+                speakHindiText(items[idx].hindi, isHover);
+            }
+        }
+
+        function renderSmallSentences() {
+            const container = document.getElementById('small-sentences-grid');
+            if (!container) return;
+
+            container.innerHTML = SMALL_SENTENCES_DATA.map((item, idx) => `
+                <div class="glass-card p-4 rounded-3xl border-2 border-sky-200/80 bg-white flex items-center justify-between shadow-sm hover:border-sky-400 transition-colors">
+                    <div onclick="speakSmallSentence(${idx})" onmouseenter="speakSmallSentence(${idx}, true)" class="flex items-center space-x-3 flex-1 cursor-pointer">
+                        <span class="text-3xl">${item.emoji}</span>
+                        <div>
+                            <p class="text-lg font-black font-devanagari text-slate-800 leading-snug">${item.text}</p>
+                            <p class="text-xs font-semibold text-slate-400">"${item.eng}"</p>
+                        </div>
+                    </div>
+                    <button onclick="openRecordModalSentence(${idx})" class="px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs rounded-xl flex items-center space-x-1 shadow-sm active:scale-95 transition-transform shrink-0 ml-2">
+                        <i class="fa-solid fa-microphone"></i>
+                        <span>बोलें</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function speakSmallSentence(idx, isHover = false) {
+            if (SMALL_SENTENCES_DATA[idx]) {
+                speakHindiText(SMALL_SENTENCES_DATA[idx].text, isHover);
+            }
+        }
+
+        function openRecordModalSentence(idx) {
+            if (SMALL_SENTENCES_DATA[idx]) {
+                openRecordModal(SMALL_SENTENCES_DATA[idx].text);
+            }
+        }
+
+        function selectGrammarTab(tab) {
+            playSfx('pop');
+            currentGrammarTab = tab;
+            document.querySelectorAll('.gram-nav-btn').forEach(btn => {
+                btn.className = "gram-nav-btn px-4 py-1.5 rounded-2xl font-bold text-xs md:text-sm bg-teal-100 text-teal-800 hover:bg-teal-200";
+            });
+            const activeBtn = document.getElementById('gram-btn-' + tab);
+            if (activeBtn) {
+                activeBtn.className = "gram-nav-btn px-4 py-1.5 rounded-2xl font-bold text-xs md:text-sm bg-teal-600 text-white shadow-md";
+            }
+            renderGrammarContent();
+        }
+
+        function speakSangyaItem(catIdx, itemIdx, isHover = false) {
+            const cat = GRAMMAR_DATA.sangya.categories[catIdx];
+            if (cat && cat.items[itemIdx]) {
+                speakHindiText(cat.items[itemIdx].hindi, isHover);
+            }
+        }
+
+        function speakSarvnamItem(idx, isHover = false) {
+            const item = GRAMMAR_DATA.sarvnam.items[idx];
+            if (item) {
+                speakHindiText(isHover ? item.hindi : `${item.hindi}. ${item.example}`, isHover);
+            }
+        }
+
+        function speakVilomItem(pairIdx, wordNum, isHover = false) {
+            const pair = GRAMMAR_DATA.vilom.pairs[pairIdx];
+            if (pair) {
+                const text = wordNum === 1 ? pair.word1 : pair.word2;
+                speakHindiText(text, isHover);
+            }
+        }
+
+        function speakSynonymItem(idx, isHover = false) {
+            const item = SYNONYMS_DATA[idx];
+            if (item) {
+                const text = isHover ? item.mainWord : `${item.mainWord}. पर्यायवाची: ${item.synonyms.join(', ')}`;
+                speakHindiText(text, isHover);
+            }
+        }
+
+        function renderGrammarContent() {
+            const container = document.getElementById('grammar-container');
+            if (!container) return;
+
+            const data = GRAMMAR_DATA[currentGrammarTab];
+            if (!data) return;
+
+            if (currentGrammarTab === 'sangya') {
+                container.innerHTML = `
+                    <div class="bg-white/90 p-5 rounded-3xl border-2 border-teal-200 shadow-sm space-y-2">
+                        <h3 class="text-2xl font-black font-devanagari text-teal-900">${data.title}</h3>
+                        <p class="text-base font-bold font-devanagari text-slate-700">${data.desc}</p>
+                        <p class="text-xs text-slate-400 font-semibold">"${data.englishDesc}"</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        ${data.categories.map((cat, cIdx) => `
+                            <div class="bg-white p-4 rounded-3xl border-2 border-teal-100 shadow-sm space-y-3">
+                                <span class="px-3 py-1 bg-teal-100 text-teal-900 font-black text-xs rounded-full uppercase">${cat.type}</span>
+                                <div class="grid grid-cols-2 gap-2">
+                                    ${cat.items.map((it, iIdx) => `
+                                        <div onclick="speakSangyaItem(${cIdx}, ${iIdx})" onmouseenter="speakSangyaItem(${cIdx}, ${iIdx}, true)" class="p-3 bg-teal-50/60 hover:bg-teal-100 rounded-2xl border border-teal-200 flex items-center space-x-2 cursor-pointer transition-colors">
+                                            <span class="text-2xl">${it.emoji}</span>
+                                            <div>
+                                                <p class="text-base font-black font-devanagari text-teal-950 leading-tight">${it.hindi}</p>
+                                                <p class="text-[10px] font-bold text-slate-400">${it.eng}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (currentGrammarTab === 'sarvnam') {
+                container.innerHTML = `
+                    <div class="bg-white/90 p-5 rounded-3xl border-2 border-teal-200 shadow-sm space-y-2">
+                        <h3 class="text-2xl font-black font-devanagari text-teal-900">${data.title}</h3>
+                        <p class="text-base font-bold font-devanagari text-slate-700">${data.desc}</p>
+                        <p class="text-xs text-slate-400 font-semibold">"${data.englishDesc}"</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        ${data.items.map((it, iIdx) => `
+                            <div onclick="speakSarvnamItem(${iIdx})" onmouseenter="speakSarvnamItem(${iIdx}, true)" class="bg-white p-4 rounded-3xl border-2 border-teal-100 shadow-sm space-y-2 cursor-pointer hover:border-teal-300 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-3xl">${it.emoji}</span>
+                                    <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">${it.eng}</span>
+                                </div>
+                                <h4 class="text-2xl font-black font-devanagari text-teal-900">${it.hindi}</h4>
+                                <p class="text-xs font-extrabold font-devanagari text-slate-600 bg-slate-50 p-2 rounded-xl">उदाहरण: "${it.example}"</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (currentGrammarTab === 'vilom') {
+                container.innerHTML = `
+                    <div class="bg-white/90 p-5 rounded-3xl border-2 border-teal-200 shadow-sm space-y-2">
+                        <h3 class="text-2xl font-black font-devanagari text-teal-900">${data.title}</h3>
+                        <p class="text-base font-bold font-devanagari text-slate-700">${data.desc}</p>
+                        <p class="text-xs text-slate-400 font-semibold">"${data.englishDesc}"</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        ${data.pairs.map((pair, pIdx) => `
+                            <div class="bg-white p-4 rounded-3xl border-2 border-teal-100 shadow-sm flex items-center justify-around space-x-2">
+                                <div onclick="speakVilomItem(${pIdx}, 1)" onmouseenter="speakVilomItem(${pIdx}, 1, true)" class="text-center cursor-pointer hover:scale-105 transition-transform">
+                                    <span class="text-3xl block">${pair.emoji1}</span>
+                                    <span class="text-lg font-black font-devanagari text-teal-900">${pair.word1}</span>
+                                    <span class="block text-[10px] text-slate-400 font-bold">${pair.eng1}</span>
+                                </div>
+                                <span class="text-xl font-black text-rose-500">↔</span>
+                                <div onclick="speakVilomItem(${pIdx}, 2)" onmouseenter="speakVilomItem(${pIdx}, 2, true)" class="text-center cursor-pointer hover:scale-105 transition-transform">
+                                    <span class="text-3xl block">${pair.emoji2}</span>
+                                    <span class="text-lg font-black font-devanagari text-rose-900">${pair.word2}</span>
+                                    <span class="block text-[10px] text-slate-400 font-bold">${pair.eng2}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        function renderSynonymsGrid() {
+            const container = document.getElementById('synonyms-grid');
+            if (!container) return;
+
+            container.innerHTML = SYNONYMS_DATA.map((item, idx) => `
+                <div onclick="speakSynonymItem(${idx})" onmouseenter="speakSynonymItem(${idx}, true)" class="glass-card card-3d p-5 rounded-3xl border-2 border-rose-200/80 hover:border-rose-400 bg-white cursor-pointer flex flex-col justify-between space-y-3 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-4xl">${item.emoji}</span>
+                        <span class="text-xs font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full">${item.eng}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black font-devanagari text-rose-900">${item.mainWord}</h3>
+                        <p class="text-xs font-bold text-slate-400">समान अर्थ वाले शब्द:</p>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 pt-2 border-t border-rose-100">
+                        ${item.synonyms.map(syn => `
+                            <span class="px-2.5 py-1 bg-rose-50 border border-rose-200 text-rose-950 font-black font-devanagari text-sm rounded-xl">${syn}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderReadingPassages() {
+            const container = document.getElementById('reading-passages-list');
+            if (!container) return;
+
+            container.innerHTML = READING_PASSAGES.map((passage, pIdx) => `
+                <div class="bg-gradient-to-br ${passage.theme} p-6 rounded-3xl border-2 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-200/60 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-4xl">${passage.emoji}</span>
+                            <h3 class="text-2xl font-black font-devanagari text-slate-800">${passage.title}</h3>
+                        </div>
+
+                        <button onclick="readFullPassage(${pIdx})" class="px-3.5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-2xl flex items-center space-x-2 shadow-sm active:scale-95 transition-transform">
+                            <i class="fa-solid fa-volume-high"></i>
+                            <span>पूरा सुनो (Listen)</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-2.5">
+                        ${passage.sentences.map((sent, sIdx) => `
+                            <div class="p-3 bg-white/80 hover:bg-white rounded-2xl border border-slate-200/80 flex items-center justify-between group transition-all">
+                                <div onclick="speakPassageSentence(${pIdx}, ${sIdx})" onmouseenter="speakPassageSentence(${pIdx}, ${sIdx}, true)" class="flex items-center space-x-3 flex-1 cursor-pointer">
+                                    <span class="w-6 h-6 rounded-full bg-orange-100 text-orange-800 font-extrabold text-xs flex items-center justify-center shrink-0">${sIdx + 1}</span>
+                                    <p class="text-lg md:text-xl font-extrabold text-slate-800 font-devanagari leading-relaxed">${sent}</p>
+                                </div>
+                                <button onclick="openRecordPassageSentence(${pIdx}, ${sIdx})" class="px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs rounded-xl flex items-center space-x-1.5 shadow-sm active:scale-95 transition-transform shrink-0 ml-2">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    <span>बोलकर देखें</span>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function readFullPassage(pIdx) {
+            const passage = READING_PASSAGES[pIdx];
+            if (passage) {
+                speakHindiText(passage.title + ". " + passage.sentences.join(' '));
+            }
+        }
+
+        function speakPassageSentence(pIdx, sIdx, isHover = false) {
+            const passage = READING_PASSAGES[pIdx];
+            if (passage && passage.sentences[sIdx]) {
+                speakHindiText(passage.sentences[sIdx], isHover);
+            }
+        }
+
+        function openRecordPassageSentence(pIdx, sIdx) {
+            const passage = READING_PASSAGES[pIdx];
+            if (passage && passage.sentences[sIdx]) {
+                openRecordModal(passage.sentences[sIdx]);
+            }
+        }
+
+        function populateTracingPicker() {
+            const select = document.getElementById('tracing-select');
+            if (!select) return;
+
+            select.innerHTML = VARNAMALA_DATA.map(item => `
+                <option value="${item.letter}">${item.letter} (${item.word})</option>
+            `).join('');
+        }
+
+        function changeTracingChar(charVal) {
+            selectedTracingChar = charVal;
+            const guide = document.getElementById('tracing-guide');
+            if (guide) guide.innerText = charVal;
+            clearTracingCanvas();
+            speakHindiText(charVal);
+        }
+
+        function initTracingCanvas() {
+            canvas = document.getElementById('tracing-canvas');
+            if (!canvas) return;
+
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx = canvas.getContext('2d');
+            ctx.lineWidth = 14;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = brushColor;
+
+            function startDraw(e) {
+                isDrawing = true;
+                ctx.beginPath();
+                const pos = getPos(e);
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function stopDraw() {
+                if (isDrawing) {
+                    isDrawing = false;
+                    addStar();
+                }
+            }
+
+            function getPos(e) {
+                const r = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - r.left, y: clientY - r.top };
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: true });
+            canvas.addEventListener('touchmove', draw, { passive: true });
+            canvas.addEventListener('touchend', stopDraw, { passive: true });
+        }
+
+        function setBrushColor(col) {
+            brushColor = col;
+            if (ctx) ctx.strokeStyle = col;
+            playSfx('pop');
+        }
+
+        function clearTracingCanvas() {
+            if (ctx && canvas) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            playSfx('pop');
+        }
+
+        function speakTracingChar() {
+            speakHindiText(selectedTracingChar);
+        }
+
+        function openRecordModal(sentenceText) {
+            currentTargetSentence = sentenceText;
+            document.getElementById('target-sentence-text').innerText = sentenceText;
+            document.getElementById('kid-speech-transcript').innerText = "यहाँ आपकी बोली हुई आवाज़ दिखाई देगी...";
+            document.getElementById('evaluation-box').classList.add('hidden');
+            document.getElementById('mic-error-banner').classList.add('hidden');
+
+            document.getElementById('record-modal').classList.remove('hidden');
+            speakHindiText("बोलकर देखें: " + sentenceText);
+            initSpeechRecognizer();
+        }
+
+        function closeRecordModal() {
+            if (speechRecognizer && isRecording) {
+                try { speechRecognizer.stop(); } catch(e){}
+            }
+            isRecording = false;
+            document.getElementById('record-modal').classList.add('hidden');
+            playSfx('pop');
+        }
+
+        function speakTargetSentence() {
+            speakHindiText(currentTargetSentence);
+        }
+
+        function initSpeechRecognizer() {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRec) return;
+
+            speechRecognizer = new SpeechRec();
+            speechRecognizer.lang = 'hi-IN';
+            speechRecognizer.interimResults = true;
+            speechRecognizer.continuous = false;
+
+            speechRecognizer.onstart = function() {
+                isRecording = true;
+                document.getElementById('record-status-label').innerText = "सुन रहा हूँ... बोलिए! (Listening...)";
+                document.getElementById('mic-record-btn').className = "w-20 h-20 bg-rose-600 text-white text-3xl rounded-full flex items-center justify-center shadow-lg animate-pulse-ring";
+            };
+
+            speechRecognizer.onresult = function(event) {
+                let transcript = "";
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                document.getElementById('kid-speech-transcript').innerText = transcript;
+                evaluateSpokenSentence(transcript);
+            };
+
+            speechRecognizer.onerror = function(event) {
+                isRecording = false;
+                document.getElementById('record-status-label').innerText = "माइक्रोफोन दबाएं और बोलना शुरू करें";
+                document.getElementById('mic-record-btn').className = "w-20 h-20 bg-rose-500 hover:bg-rose-600 text-white text-3xl rounded-full flex items-center justify-center shadow-lg transition-all active:scale-90";
+                
+                if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                    document.getElementById('mic-error-banner').classList.remove('hidden');
+                }
+            };
+
+            speechRecognizer.onend = function() {
+                isRecording = false;
+                document.getElementById('record-status-label').innerText = "माइक्रोफोन दबाएं और बोलना शुरू करें";
+                document.getElementById('mic-record-btn').className = "w-20 h-20 bg-rose-500 hover:bg-rose-600 text-white text-3xl rounded-full flex items-center justify-center shadow-lg transition-all active:scale-90";
+            };
+        }
+
+        function toggleRecording() {
+            if (!speechRecognizer) {
+                document.getElementById('mic-error-text').innerText = "आपका ब्राउज़र स्पीच रिकग्निशन सपोर्ट नहीं करता।";
+                document.getElementById('mic-error-banner').classList.remove('hidden');
+                return;
+            }
+
+            if (!isRecording) {
+                try {
+                    speechRecognizer.start();
+                } catch(e) {
+                    document.getElementById('mic-error-banner').classList.remove('hidden');
+                }
+            } else {
+                speechRecognizer.stop();
+            }
+        }
+
+        function simulatePracticeSpeech() {
+            document.getElementById('kid-speech-transcript').innerText = currentTargetSentence;
+            evaluateSpokenSentence(currentTargetSentence);
+        }
+
+        function evaluateSpokenSentence(spokenText) {
+            if (!spokenText || !currentTargetSentence) return;
+
+            const targetWords = currentTargetSentence.replace(/[।.,!?]/g, '').trim().split(/\s+/);
+            const spokenWords = spokenText.replace(/[।.,!?]/g, '').trim().split(/\s+/);
+
+            let matchedCount = 0;
+            const wordMatchHTML = targetWords.map(w => {
+                const match = spokenWords.some(sw => sw.includes(w) || w.includes(sw));
+                if (match) {
+                    matchedCount++;
+                    return `<span class="px-2 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 font-black font-devanagari text-sm rounded-xl">${w} ✓</span>`;
+                } else {
+                    return `<span class="px-2 py-1 bg-rose-100 text-rose-900 border border-rose-300 font-black font-devanagari text-sm rounded-xl">${w}</span>`;
+                }
+            }).join('');
+
+            const accuracy = Math.round((matchedCount / targetWords.length) * 100);
+            const evalBox = document.getElementById('evaluation-box');
+            evalBox.classList.remove('hidden');
+
+            const titleElem = document.getElementById('eval-title');
+            const feedbackElem = document.getElementById('eval-feedback-text');
+            const wordMatchDisplay = document.getElementById('word-match-display');
+            wordMatchDisplay.innerHTML = wordMatchHTML;
+
+            if (accuracy >= 70) {
+                playSfx('correct');
+                addStar();
+                evalBox.className = "p-4 rounded-2xl border-2 bg-emerald-50 border-emerald-300 space-y-2";
+                titleElem.innerText = `अद्भुत! (${accuracy}% Accurate)`;
+                feedbackElem.innerText = "बहुत बढ़िया उच्चारण! आपने लगभग सारे शब्द सही बोले। 🎉";
+                speakHindiText("शाबाश! आपका उच्चारण बहुत बढ़िया है।");
+            } else {
+                playSfx('wrong');
+                evalBox.className = "p-4 rounded-2xl border-2 bg-amber-50 border-amber-300 space-y-2";
+                titleElem.innerText = `फिर से कोशिश करें (${accuracy}% Accurate)`;
+                feedbackElem.innerText = "अच्छा प्रयास! लाल रंग वाले शब्दों को फिर से सुनकर अभ्यास करें। 💪";
+            }
+        }
+
+        function startQuiz() {
+            quizScore = 0;
+            currentQuestionIdx = 0;
+            const quizScoreElem = document.getElementById('quiz-score');
+            if (quizScoreElem) quizScoreElem.innerText = "Score: 0";
+
+            quizQuestions = [
+                {
+                    type: 'letter',
+                    questionText: "अक्षर 'अ' से क्या होता है?",
+                    promptAudio: "अक्षर अ से क्या होता है?",
+                    correctItem: VARNAMALA_DATA[0],
+                    options: [VARNAMALA_DATA[0], VARNAMALA_DATA[1], VARNAMALA_DATA[3], VARNAMALA_DATA[13]]
+                },
+                {
+                    type: 'letter',
+                    questionText: "अक्षर 'क' से क्या होता है?",
+                    promptAudio: "अक्षर क से क्या होता है?",
+                    correctItem: VARNAMALA_DATA[13],
+                    options: [VARNAMALA_DATA[14], VARNAMALA_DATA[13], VARNAMALA_DATA[15], VARNAMALA_DATA[2]]
+                },
+                {
+                    type: 'ginti',
+                    questionText: "हिंदी संख्या '५' को क्या कहते हैं?",
+                    promptAudio: "हिंदी संख्या ५ को क्या कहते हैं?",
+                    correctItem: GINTI_DATA[4],
+                    options: [GINTI_DATA[2], GINTI_DATA[4], GINTI_DATA[9], GINTI_DATA[1]]
+                },
+                {
+                    type: 'ginti',
+                    questionText: "हिंदी संख्या '१०' को क्या कहते हैं?",
+                    promptAudio: "हिंदी संख्या १० को क्या कहते हैं?",
+                    correctItem: GINTI_DATA[9],
+                    options: [GINTI_DATA[9], GINTI_DATA[6], GINTI_DATA[14], GINTI_DATA[3]]
+                }
+            ];
+
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const feedbackBox = document.getElementById('quiz-feedback');
+            if (feedbackBox) feedbackBox.className = "hidden p-4 rounded-2xl font-black font-devanagari text-lg";
+
+            if (currentQuestionIdx >= quizQuestions.length) {
+                const progressElem = document.getElementById('quiz-progress');
+                if (progressElem) progressElem.innerText = "खेल पूरा हुआ! (Game Finished)";
+                
+                const qTextElem = document.getElementById('quiz-question-text');
+                if (qTextElem) qTextElem.innerText = `शाबाश! आपका स्कोर: ${quizScore} / ${quizQuestions.length}`;
+                
+                const optionsContainer = document.getElementById('quiz-options');
+                if (optionsContainer) {
+                    optionsContainer.innerHTML = `
+                        <button onclick="startQuiz()" class="col-span-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xl rounded-2xl shadow-md">
+                            फिर से खेलें (Play Again) 🔄
+                        </button>
+                    `;
+                }
+                speakHindiText(`बहुत बढ़िया! आपने ${quizScore} अंक प्राप्त किए।`);
+                unlockSticker('stk_quiz');
+                return;
+            }
+
+            const current = quizQuestions[currentQuestionIdx];
+            currentQuizItem = current;
+
+            const progressElem = document.getElementById('quiz-progress');
+            if (progressElem) progressElem.innerText = `Question ${currentQuestionIdx + 1} of ${quizQuestions.length}`;
+            
+            const qTextElem = document.getElementById('quiz-question-text');
+            if (qTextElem) qTextElem.innerText = current.questionText;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            if (optionsContainer) {
+                optionsContainer.innerHTML = current.options.map((opt, optIdx) => {
+                    if (current.type === 'letter') {
+                        return `
+                            <button onclick="checkQuizOption(${optIdx})" onmouseenter="speakQuizOption(${optIdx})" class="quiz-opt-btn p-4 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 rounded-3xl flex flex-col items-center justify-center space-y-1 active:scale-95 transition-transform">
+                                <span class="text-4xl">${opt.emoji}</span>
+                                <span class="text-xl font-bold font-devanagari text-slate-800">${opt.word}</span>
+                            </button>
+                        `;
+                    } else {
+                        return `
+                            <button onclick="checkQuizOption(${optIdx})" onmouseenter="speakQuizOption(${optIdx})" class="quiz-opt-btn p-4 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 rounded-3xl flex flex-col items-center justify-center space-y-1 active:scale-95 transition-transform">
+                                <span class="text-4xl font-black font-devanagari text-indigo-900">${opt.hindiDigit}</span>
+                                <span class="text-sm font-bold font-devanagari text-slate-700">${opt.hindiWord}</span>
+                            </button>
+                        `;
+                    }
+                }).join('');
+            }
+
+            setTimeout(playQuizPromptAudio, 300);
+        }
+
+        function speakQuizOption(optIdx) {
+            if (!currentQuizItem || !currentQuizItem.options[optIdx]) return;
+            const opt = currentQuizItem.options[optIdx];
+            const textToSpeak = currentQuizItem.type === 'letter' ? opt.word : opt.hindiWord;
+            speakHindiText(textToSpeak, true);
+        }
+
+        function checkQuizOption(optIdx) {
+            if (!currentQuizItem || !currentQuizItem.options[optIdx]) return;
+            const opt = currentQuizItem.options[optIdx];
+            const val = currentQuizItem.type === 'letter' ? opt.letter : opt.hindiWord;
+            checkQuizAnswer(val);
+        }
+
+        function playQuizPromptAudio() {
+            if (currentQuizItem) {
+                speakHindiText(currentQuizItem.promptAudio);
+            }
+        }
+
+        function checkQuizAnswer(selectedVal) {
+            const current = currentQuizItem;
+            const feedbackBox = document.getElementById('quiz-feedback');
+            if (feedbackBox) feedbackBox.classList.remove('hidden');
+
+            const isCorrect = (current.type === 'letter' && selectedVal === current.correctItem.letter) ||
+                              (current.type === 'ginti' && selectedVal === current.correctItem.hindiWord);
+
+            if (isCorrect) {
+                quizScore++;
+                addStar();
+                playSfx('correct');
+                const quizScoreElem = document.getElementById('quiz-score');
+                if (quizScoreElem) quizScoreElem.innerText = `Score: ${quizScore}`;
+                
+                if (feedbackBox) {
+                    feedbackBox.className = "p-4 rounded-2xl font-black font-devanagari text-lg bg-emerald-100 text-emerald-800 border border-emerald-300";
+                    feedbackBox.innerText = "सही उत्तर! 🎉 (Correct!)";
+                }
+                speakHindiText("सही उत्तर!");
+            } else {
+                playSfx('wrong');
+                if (feedbackBox) {
+                    feedbackBox.className = "p-4 rounded-2xl font-black font-devanagari text-lg bg-rose-100 text-rose-800 border border-rose-300";
+                    feedbackBox.innerText = "अरे वाह, कोशिश करते रहो! (Try Again!)";
+                }
+                speakHindiText("कोई बात नहीं! कोशिश करते रहो।");
+            }
+
+            document.querySelectorAll('.quiz-opt-btn').forEach(btn => btn.disabled = true);
+
+            setTimeout(() => {
+                currentQuestionIdx++;
+                loadQuizQuestion();
+            }, 1600);
+        }
+
+        function addStar() {
+            starCount++;
+            const starElem = document.getElementById('star-count');
+            if (starElem) starElem.innerText = starCount;
+            playSfx('star');
+
+            if (starCount >= 5) unlockSticker('stk_star5');
+            if (starCount >= 10) unlockSticker('stk_star10');
+        }
+
+        function claimLevelReward(levelCode) {
+            addStar(); addStar(); addStar();
+            const sticker = STICKERS_DATA.find(s => s.level === levelCode);
+            if (sticker) unlockSticker(sticker.id);
+        }
+
+        function unlockSticker(stickerId) {
+            if (unlockedStickers.includes(stickerId)) return;
+            const sticker = STICKERS_DATA.find(s => s.id === stickerId);
+            if (!sticker) return;
+
+            unlockedStickers.push(stickerId);
+            updateStickerBadgeCount();
+            showStickerRewardModal(sticker);
+        }
+
+        function updateStickerBadgeCount() {
+            const countElem = document.getElementById('sticker-count-badge');
+            if (countElem) {
+                countElem.innerText = `${unlockedStickers.length}/${STICKERS_DATA.length}`;
+            }
+        }
+
+        function showStickerRewardModal(sticker) {
+            playSfx('correct');
+            document.getElementById('reward-sticker-emoji').innerText = sticker.emoji;
+            document.getElementById('reward-sticker-title').innerText = sticker.title;
+            document.getElementById('reward-sticker-desc').innerText = `${sticker.engTitle} - ${sticker.desc}`;
+            
+            document.getElementById('sticker-reward-modal').classList.remove('hidden');
+            speakHindiText(`शाबाश! आपको नया स्टिकर मिला: ${sticker.title}`);
+        }
+
+        function closeStickerRewardModal() {
+            playSfx('pop');
+            document.getElementById('sticker-reward-modal').classList.add('hidden');
+        }
+
+        function openStickerAlbum() {
+            playSfx('pop');
+            renderStickerAlbum();
+            document.getElementById('sticker-album-modal').classList.remove('hidden');
+        }
+
+        function closeStickerAlbum() {
+            playSfx('pop');
+            document.getElementById('sticker-album-modal').classList.add('hidden');
+        }
+
+        function renderStickerAlbum() {
+            const grid = document.getElementById('sticker-grid');
+            if (!grid) return;
+
+            grid.innerHTML = STICKERS_DATA.map(stk => {
+                const isUnlocked = unlockedStickers.includes(stk.id);
+                if (isUnlocked) {
+                    return `
+                        <div onclick="speakHindiText('${stk.title}')" class="p-4 bg-gradient-to-b from-amber-50 to-orange-100 border-2 border-amber-300 rounded-3xl text-center space-y-1 cursor-pointer hover:scale-105 transition-transform shadow-sm">
+                            <span class="text-5xl block animate-bounce-slow">${stk.emoji}</span>
+                            <h4 class="font-black font-devanagari text-amber-950 text-lg leading-tight">${stk.title}</h4>
+                            <p class="text-[10px] font-bold text-amber-800">${stk.engTitle}</p>
+                            <span class="inline-block text-[9px] font-black bg-emerald-500 text-white px-2 py-0.5 rounded-full">UNLOCKED ✓</span>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="p-4 bg-slate-100 border-2 border-dashed border-slate-300 rounded-3xl text-center space-y-1 opacity-60">
+                            <span class="text-4xl block grayscale opacity-40">🔒</span>
+                            <h4 class="font-bold font-devanagari text-slate-500 text-sm leading-tight">${stk.title}</h4>
+                            <p class="text-[9px] font-semibold text-slate-400">${stk.req}</p>
+                            <span class="inline-block text-[9px] font-bold bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">LOCKED</span>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function toggleAudioMute() {
+            isAudioMuted = !isAudioMuted;
+            const icon = document.getElementById('mute-icon');
+            if (isAudioMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-rose-500';
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-slate-700';
+                playSfx('pop');
+            }
+        }
+
+        function toggleHoverAudio() {
+            isHoverAudioEnabled = !isHoverAudioEnabled;
+            playSfx('pop');
+            const btnText = document.getElementById('hover-toggle-text');
+            const btnIcon = document.getElementById('hover-toggle-icon');
+            
+            if (isHoverAudioEnabled) {
+                btnText.innerText = "Hover Audio: ON";
+                btnIcon.className = "fa-solid fa-hand-pointer text-indigo-500";
+                speakHindiText("माउस ऑडियो चालू है");
+            } else {
+                btnText.innerText = "Hover Audio: OFF";
+                btnIcon.className = "fa-solid fa-hand text-slate-400";
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            }
+        }
+
+        function switchTab(tabId) {
+            playSfx('pop');
+            currentTab = tabId;
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-3 py-2 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-all bg-white text-slate-600 hover:bg-slate-100 border border-slate-200";
+            });
+
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-3.5 py-2 rounded-2xl font-bold text-xs md:text-sm flex items-center space-x-1.5 transition-all bg-amber-500 text-white shadow-md border-transparent";
+            }
+
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+
+            const targetSection = document.getElementById('section-' + tabId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            if (tabId === 'tracing') {
+                setTimeout(initTracingCanvas, 50);
+            } else if (tabId === 'quiz') {
+                startQuiz();
+            } else if (tabId === 'grammar') {
+                renderGrammarContent();
+                unlockSticker('stk_l5');
+            } else if (tabId === 'sentences') {
+                renderSmallSentences();
+                unlockSticker('stk_l4');
+            } else if (tabId === 'synonyms') {
+                renderSynonymsGrid();
+                unlockSticker('stk_l6');
+            } else if (tabId === 'reading') {
+                renderReadingPassages();
+                unlockSticker('stk_l7');
+            } else if (tabId === 'shabd') {
+                renderShabdGrid();
+                unlockSticker('stk_l3');
+            } else if (tabId === 'ginti') {
+                renderGintiGrid();
+                unlockSticker('stk_l2');
+            } else if (tabId === 'varnamala') {
+                renderVarnamalaGrid('all');
+                unlockSticker('stk_l1');
+            }
+        }
+
+        window.onload = function() {
+            if (typeof renderVarnamalaGrid === 'function') renderVarnamalaGrid('all');
+            if (typeof renderGintiGrid === 'function') renderGintiGrid();
+            if (typeof renderShabdGrid === 'function') renderShabdGrid();
+            if (typeof renderSmallSentences === 'function') renderSmallSentences();
+            if (typeof renderGrammarContent === 'function') renderGrammarContent();
+            if (typeof renderSynonymsGrid === 'function') renderSynonymsGrid();
+            if (typeof renderReadingPassages === 'function') renderReadingPassages();
+            if (typeof populateTracingPicker === 'function') populateTracingPicker();
+
+            // Default view to Dashboard
+            switchTab('dashboard');
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    window.speechSynthesis.getVoices();
+                };
+            }
+        };
+    </script>
+</body>
+</html>
